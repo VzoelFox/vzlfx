@@ -1,0 +1,202 @@
+; Morph YAML Parser (Basic Block Style)
+; [AI_HINT: Parser YAML subset yang kompatibel dengan struktur JSON Node]
+
+; Menggunakan struktur node yang sama dengan JSON Parser
+; Type: 0=Null, 1=Bool, 2=Num, 3=Str, 4=Arr, 5=Obj
+
+fungsi seer.yaml.parse
+    ; Input: rdi (pointer string)
+    ; Output: rax (root node)
+
+    ; Note: YAML parsing is complex (indentation stack).
+    ; For bootstrapping, we implement a simplified "Flow Style" parser first
+    ; (which mimics JSON but without quotes sometimes)
+    ; and basic "Key: Value" block style handling.
+
+    ; Strategy: Detect first char. If { or [, delegate to JSON parser (YAML supports JSON).
+    ; If not, assume Block Style Object.
+
+    call seer.json.skip_whitespace
+    mov al, [rdi]
+    cmp al, '{'
+    je seer.json.parse
+    cmp al, '['
+    je seer.json.parse
+
+    ; Fallback to Block Object Parser
+    call seer.yaml.parse_block
+    ret
+tutup_fungsi
+
+fungsi seer.yaml.parse_block
+    ; Parse indent-based dictionary
+
+    push rbp
+    mov rbp, rsp
+    push r12 ; Root Node
+    push r13 ; Last Child
+
+    push rdi
+    mov rdi, 32
+    call seer.mem.alloc
+    pop rdi
+    mov r12, rax
+    mov qword [r12], 5 ; OBJ
+
+    xor r13, r13
+
+    .loop_line:
+        call seer.json.skip_whitespace
+        mov al, [rdi]
+        test al, al
+        jz .done
+
+        ; Parse Key (Word before :)
+        push r12
+        push r13
+        call seer.yaml.parse_key
+        mov rbx, rax ; Key String Ptr
+        pop r13
+        pop r12
+
+        call seer.json.skip_whitespace
+        cmp byte [rdi], ':'
+        jne .error
+        inc rdi
+        call seer.json.skip_whitespace
+
+        ; Parse Value (Rest of line or recursive)
+        push rbx
+        push r12
+        push r13
+        call seer.yaml.parse_value
+        mov rdx, rax ; Value Node
+        pop r13
+        pop r12
+        pop rbx
+
+        ; Attach Key
+        mov [rdx+16], rbx
+
+        ; Link
+        cmp r13, 0
+        je .first
+        mov [r13+24], rdx
+        jmp .update
+        .first:
+        mov [r12+8], rdx
+        .update:
+        mov r13, rdx
+
+        jmp .loop_line
+
+    .done:
+    mov rax, r12
+    pop r13
+    pop r12
+    leave
+    ret
+
+    .error:
+    mov rax, 0
+    pop r13
+    pop r12
+    leave
+    ret
+tutup_fungsi
+
+fungsi seer.yaml.parse_key
+    ; Read string until :
+    push rbx
+    mov rbx, rdi
+
+    .scan:
+        mov al, [rdi]
+        cmp al, ':'
+        je .found
+        cmp al, 0
+        je .found
+        inc rdi
+        jmp .scan
+
+    .found:
+    ; Copy string
+    mov rcx, rdi
+    sub rcx, rbx
+
+    push rdi
+    push rcx
+    inc rdi
+    call seer.mem.alloc
+    mov rdx, rax
+    pop rcx
+
+    mov rsi, rbx
+    mov rdi, rdx
+    rep movsb
+    mov byte [rdi], 0
+
+    pop rdi
+    mov rax, rdx
+    pop rbx
+    ret
+tutup_fungsi
+
+fungsi seer.yaml.parse_value
+    ; Simple: Read until newline -> String/Num
+    ; If starts with ", use JSON string parse
+
+    mov al, [rdi]
+    cmp al, '"'
+    je seer.json.parse_string
+
+    ; Else read rest of line
+    push rbx
+    mov rbx, rdi
+
+    .scan:
+        mov al, [rdi]
+        cmp al, 10 ; Newline
+        je .found
+        cmp al, 0
+        je .found
+        inc rdi
+        jmp .scan
+
+    .found:
+    ; Create String Node
+    push rdi
+    push rbx
+    mov rdi, 32
+    call seer.mem.alloc
+    mov r8, rax ; Node
+    mov qword [r8], 3 ; STR
+
+    pop rbx
+    pop rdi
+
+    mov rcx, rdi
+    sub rcx, rbx
+
+    push r8
+    push rdi
+    push rcx
+    inc rdi
+    call seer.mem.alloc
+    mov rdx, rax ; Buf
+    pop rcx
+
+    mov rsi, rbx
+    mov rdi, rdx
+    rep movsb
+    mov byte [rdi], 0
+
+    pop rdi
+    pop r8
+
+    mov [r8+8], rdx
+    mov rax, r8
+
+    pop rbx
+    ret
+tutup_fungsi

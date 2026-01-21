@@ -1,0 +1,137 @@
+; Morph Memory Allocator (Simple Heap)
+; [AI_HINT: Pengelola memori dinamis menggunakan sys_brk. Header 32-byte.]
+
+; Struktur Header Blok:
+; [0-7]   Size (Payload)
+; [8-15]  Status (1=Used, 0=Free)
+; [16-23] Magic (0x28062004)
+; [24-31] Next Block Ptr (Linked List untuk traversal cepat - Optional Optimization)
+
+fungsi seer.mem.init
+    ; Inisialisasi Heap Root (disimpan di variabel global / r15 di userland)
+    ; Input: None
+    ; Output: r15 (Heap Start)
+
+    mov rdi, 0
+    mov rax, 12     ; SYS_BRK
+    syscall
+    mov r15, rax
+    ret
+tutup_fungsi
+
+fungsi seer.mem.alloc
+    ; Input: rdi (size)
+    ; Output: rax (pointer payload)
+
+    push rbx
+    push r12
+    push r13
+
+    ; Align size 16-byte
+    add rdi, 15
+    and rdi, -16
+    mov rsi, rdi    ; rsi = requested size
+
+    ; 1. Get Current Break (End of Heap)
+    mov rdi, 0
+    mov rax, 12     ; SYS_BRK
+    syscall
+    mov rbx, rax    ; rbx = current break
+
+    ; 2. Simple Traversal (First Fit) - Start from r15
+    mov r12, r15    ; r12 = current ptr
+
+    loop find_free
+        cmp r12, rbx
+        jge done_find   ; Reached end
+
+        ; Check Magic
+        mov rax, [r12+16]
+        mov rdx, 0x28062004
+        cmp rax, rdx
+        jne heap_corrupt
+
+        ; Check Status
+        mov rax, [r12+8] ; Status
+        cmp rax, 0
+        jne next_block
+
+        ; Check Size
+        mov rax, [r12]   ; Size
+        cmp rax, rsi
+        jl next_block
+
+        ; Found! Mark used
+        mov qword [r12+8], 1
+        lea rax, [r12+32] ; Return payload
+        pop r13
+        pop r12
+        pop rbx
+        ret
+
+        next_block:
+        add r12, 32      ; Skip header
+        add r12, [r12-32] ; Skip payload (size stored in header)
+        jmp find_free
+    tutup_loop
+
+    done_find:
+    ; 3. Extend Heap
+    ; New Break = rbx + 32 + rsi
+    mov rdi, rbx
+    add rdi, 32
+    add rdi, rsi
+
+    mov rax, 12     ; SYS_BRK
+    syscall
+
+    ; Check error (if rax == rbx, failed)
+    cmp rax, rbx
+    je alloc_fail
+
+    ; Setup Header at rbx
+    mov [rbx], rsi          ; Size
+    mov qword [rbx+8], 1    ; Status = Used
+    mov qword [rbx+16], 0x28062004 ; Magic
+
+    lea rax, [rbx+32]       ; Return payload
+
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+    alloc_fail:
+    mov rax, 0
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+    heap_corrupt:
+    ; Panic
+    mov rdi, 666
+    mov rax, 60
+    syscall
+tutup_fungsi
+
+fungsi seer.mem.free
+    ; Input: rdi (ptr payload)
+
+    test rdi, rdi
+    jz free_done
+
+    sub rdi, 32     ; Back to header
+
+    ; Check Magic
+    mov rax, [rdi+16]
+    mov rdx, 0x28062004
+    cmp rax, rdx
+    jne heap_corrupt
+
+    ; Mark Free
+    mov qword [rdi+8], 0
+
+    free_done:
+    ret
+tutup_fungsi

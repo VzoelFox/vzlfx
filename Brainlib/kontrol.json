@@ -1,0 +1,680 @@
+[
+  {
+    "mnemonic": "cmp.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x39", "modrm": "reg,reg" },
+    "hint": "Bandingkan dua register"
+  },
+  {
+    "mnemonic": "cmp.r64.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "7", "imm": "imm32" },
+    "hint": "Bandingkan register dengan angka 32-bit"
+  },
+  {
+    "mnemonic": "cmp.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "7", "imm": "imm8" },
+    "hint": "Bandingkan register dengan angka 8-bit"
+  },
+  {
+    "mnemonic": "test.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x85", "modrm": "reg,reg" },
+    "hint": "Uji bit register (AND logic)"
+  },
+  {
+    "mnemonic": "jmp.rel32",
+    "encoding": { "opcode": "0xE9", "imm": "rel32" },
+    "hint": "Lompat tanpa syarat (lompat)"
+  },
+  {
+    "mnemonic": "je.rel32",
+    "encoding": { "opcode": "0x0F,0x84", "imm": "rel32" },
+    "hint": "Lompat jika Sama / Nol"
+  },
+  {
+    "mnemonic": "jz.rel32",
+    "encoding": { "opcode": "0x0F,0x84", "imm": "rel32" },
+    "hint": "Alias je"
+  },
+  {
+    "mnemonic": "jne.rel32",
+    "encoding": { "opcode": "0x0F,0x85", "imm": "rel32" },
+    "hint": "Lompat jika Tidak Sama / Tidak Nol"
+  },
+  {
+    "mnemonic": "jnz.rel32",
+    "encoding": { "opcode": "0x0F,0x85", "imm": "rel32" },
+    "hint": "Alias jne"
+  },
+  {
+    "mnemonic": "jl.rel32",
+    "encoding": { "opcode": "0x0F,0x8C", "imm": "rel32" },
+    "hint": "Lompat jika Lebih Kecil (Signed)"
+  },
+  {
+    "mnemonic": "jle.rel32",
+    "encoding": { "opcode": "0x0F,0x8E", "imm": "rel32" },
+    "hint": "Lompat jika Lebih Kecil atau Sama (Signed)"
+  },
+  {
+    "mnemonic": "jg.rel32",
+    "encoding": { "opcode": "0x0F,0x8F", "imm": "rel32" },
+    "hint": "Lompat jika Lebih Besar (Signed)"
+  },
+  {
+    "mnemonic": "jge.rel32",
+    "encoding": { "opcode": "0x0F,0x8D", "imm": "rel32" },
+    "hint": "Lompat jika Lebih Besar atau Sama (Signed)"
+  },
+  {
+    "mnemonic": "jb.rel32",
+    "encoding": { "opcode": "0x0F,0x82", "imm": "rel32" },
+    "hint": "Lompat jika Di Bawah (Unsigned)"
+  },
+  {
+    "mnemonic": "jae.rel32",
+    "encoding": { "opcode": "0x0F,0x83", "imm": "rel32" },
+    "hint": "Lompat jika Di Atas atau Sama (Unsigned)"
+  },
+  {
+    "mnemonic": "ja.rel32",
+    "encoding": { "opcode": "0x0F,0x87", "imm": "rel32" },
+    "hint": "Lompat jika Di Atas (Unsigned)"
+  },
+  {
+    "mnemonic": "jbe.rel32",
+    "encoding": { "opcode": "0x0F,0x86", "imm": "rel32" },
+    "hint": "Lompat jika Di Bawah atau Sama (Unsigned)"
+  },
+  {
+    "mnemonic": "js.rel32",
+    "encoding": { "opcode": "0x0F,0x88", "imm": "rel32" },
+    "hint": "Lompat jika Negatif (Sign flag)"
+  },
+  {
+    "mnemonic": "jns.rel32",
+    "encoding": { "opcode": "0x0F,0x89", "imm": "rel32" },
+    "hint": "Lompat jika Positif (Not Sign)"
+  },
+  {
+    "mnemonic": "jo.rel32",
+    "encoding": { "opcode": "0x0F,0x80", "imm": "rel32" },
+    "hint": "Lompat jika Overflow"
+  },
+  {
+    "mnemonic": "jno.rel32",
+    "encoding": { "opcode": "0x0F,0x81", "imm": "rel32" },
+    "hint": "Lompat jika Tidak Overflow"
+  },
+  {
+    "mnemonic": "jp.rel32",
+    "encoding": { "opcode": "0x0F,0x8A", "imm": "rel32" },
+    "hint": "Lompat jika Paritas Genap (Parity Even)"
+  },
+  {
+    "mnemonic": "jpe.rel32",
+    "encoding": { "opcode": "0x0F,0x8A", "imm": "rel32" },
+    "hint": "Alias jp"
+  },
+  {
+    "mnemonic": "jnp.rel32",
+    "encoding": { "opcode": "0x0F,0x8B", "imm": "rel32" },
+    "hint": "Lompat jika Paritas Ganjil (Not Parity/Odd)"
+  },
+  {
+    "mnemonic": "jpo.rel32",
+    "encoding": { "opcode": "0x0F,0x8B", "imm": "rel32" },
+    "hint": "Alias jnp"
+  },
+  {
+    "mnemonic": "cmove.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x44", "modrm": "reg,reg" },
+    "hint": "Salin register jika Sama/Nol"
+  },
+  {
+    "mnemonic": "cmovz.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x44", "modrm": "reg,reg" },
+    "hint": "Alias cmove"
+  },
+  {
+    "mnemonic": "cmovne.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x45", "modrm": "reg,reg" },
+    "hint": "Salin register jika Tidak Sama/Tidak Nol"
+  },
+  {
+    "mnemonic": "cmovnz.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x45", "modrm": "reg,reg" },
+    "hint": "Alias cmovne"
+  },
+  {
+    "mnemonic": "cmovs.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x48", "modrm": "reg,reg" },
+    "hint": "Salin register jika Negatif"
+  },
+  {
+    "mnemonic": "cmovns.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x49", "modrm": "reg,reg" },
+    "hint": "Salin register jika Positif"
+  },
+  {
+    "mnemonic": "cmovl.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x4C", "modrm": "reg,reg" },
+    "hint": "Salin register jika Lebih Kecil (Signed)"
+  },
+  {
+    "mnemonic": "cmovle.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x4E", "modrm": "reg,reg" },
+    "hint": "Salin register jika Lebih Kecil/Sama (Signed)"
+  },
+  {
+    "mnemonic": "cmovg.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x4F", "modrm": "reg,reg" },
+    "hint": "Salin register jika Lebih Besar (Signed)"
+  },
+  {
+    "mnemonic": "cmovge.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x4D", "modrm": "reg,reg" },
+    "hint": "Salin register jika Lebih Besar/Sama (Signed)"
+  },
+  {
+    "mnemonic": "cmovb.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x42", "modrm": "reg,reg" },
+    "hint": "Salin register jika Di Bawah (Unsigned)"
+  },
+  {
+    "mnemonic": "cmovc.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x42", "modrm": "reg,reg" },
+    "hint": "Alias cmovb (Carry)"
+  },
+  {
+    "mnemonic": "cmovbe.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x46", "modrm": "reg,reg" },
+    "hint": "Salin register jika Di Bawah/Sama (Unsigned)"
+  },
+  {
+    "mnemonic": "cmova.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x47", "modrm": "reg,reg" },
+    "hint": "Salin register jika Di Atas (Unsigned)"
+  },
+  {
+    "mnemonic": "cmovae.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x43", "modrm": "reg,reg" },
+    "hint": "Salin register jika Di Atas/Sama (Unsigned)"
+  },
+  {
+    "mnemonic": "cmovnc.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x43", "modrm": "reg,reg" },
+    "hint": "Alias cmovae (Not Carry)"
+  },
+  {
+    "mnemonic": "cmovo.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x40", "modrm": "reg,reg" },
+    "hint": "Salin register jika Overflow"
+  },
+  {
+    "mnemonic": "cmovno.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x41", "modrm": "reg,reg" },
+    "hint": "Salin register jika Tidak Overflow"
+  },
+  {
+    "mnemonic": "cmovp.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x4A", "modrm": "reg,reg" },
+    "hint": "Salin register jika Paritas Genap"
+  },
+  {
+    "mnemonic": "cmovpe.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x4A", "modrm": "reg,reg" },
+    "hint": "Alias cmovp"
+  },
+  {
+    "mnemonic": "cmovnp.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x4B", "modrm": "reg,reg" },
+    "hint": "Salin register jika Paritas Ganjil"
+  },
+  {
+    "mnemonic": "cmovpo.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0x4B", "modrm": "reg,reg" },
+    "hint": "Alias cmovnp"
+  },
+  {
+    "mnemonic": "sete.r64",
+    "encoding": { "opcode": "0x0F,0x94", "modrm": "0" },
+    "hint": "Set byte 1 jika Sama/Nol, 0 jika tidak"
+  },
+  {
+    "mnemonic": "setz.r64",
+    "encoding": { "opcode": "0x0F,0x94", "modrm": "0" },
+    "hint": "Alias sete"
+  },
+  {
+    "mnemonic": "setne.r64",
+    "encoding": { "opcode": "0x0F,0x95", "modrm": "0" },
+    "hint": "Set byte 1 jika Tidak Sama/Tidak Nol"
+  },
+  {
+    "mnemonic": "setnz.r64",
+    "encoding": { "opcode": "0x0F,0x95", "modrm": "0" },
+    "hint": "Alias setne"
+  },
+  {
+    "mnemonic": "sets.r64",
+    "encoding": { "opcode": "0x0F,0x98", "modrm": "0" },
+    "hint": "Set byte 1 jika Negatif"
+  },
+  {
+    "mnemonic": "setns.r64",
+    "encoding": { "opcode": "0x0F,0x99", "modrm": "0" },
+    "hint": "Set byte 1 jika Positif"
+  },
+  {
+    "mnemonic": "setl.r64",
+    "encoding": { "opcode": "0x0F,0x9C", "modrm": "0" },
+    "hint": "Set byte 1 jika Lebih Kecil (Signed)"
+  },
+  {
+    "mnemonic": "setle.r64",
+    "encoding": { "opcode": "0x0F,0x9E", "modrm": "0" },
+    "hint": "Set byte 1 jika Lebih Kecil/Sama (Signed)"
+  },
+  {
+    "mnemonic": "setg.r64",
+    "encoding": { "opcode": "0x0F,0x9F", "modrm": "0" },
+    "hint": "Set byte 1 jika Lebih Besar (Signed)"
+  },
+  {
+    "mnemonic": "setge.r64",
+    "encoding": { "opcode": "0x0F,0x9D", "modrm": "0" },
+    "hint": "Set byte 1 jika Lebih Besar/Sama (Signed)"
+  },
+  {
+    "mnemonic": "setb.r64",
+    "encoding": { "opcode": "0x0F,0x92", "modrm": "0" },
+    "hint": "Set byte 1 jika Di Bawah (Unsigned)"
+  },
+  {
+    "mnemonic": "setc.r64",
+    "encoding": { "opcode": "0x0F,0x92", "modrm": "0" },
+    "hint": "Alias setb (Carry)"
+  },
+  {
+    "mnemonic": "setbe.r64",
+    "encoding": { "opcode": "0x0F,0x96", "modrm": "0" },
+    "hint": "Set byte 1 jika Di Bawah/Sama (Unsigned)"
+  },
+  {
+    "mnemonic": "seta.r64",
+    "encoding": { "opcode": "0x0F,0x97", "modrm": "0" },
+    "hint": "Set byte 1 jika Di Atas (Unsigned)"
+  },
+  {
+    "mnemonic": "setae.r64",
+    "encoding": { "opcode": "0x0F,0x93", "modrm": "0" },
+    "hint": "Set byte 1 jika Di Atas/Sama (Unsigned)"
+  },
+  {
+    "mnemonic": "setnc.r64",
+    "encoding": { "opcode": "0x0F,0x93", "modrm": "0" },
+    "hint": "Alias setae (Not Carry)"
+  },
+  {
+    "mnemonic": "seto.r64",
+    "encoding": { "opcode": "0x0F,0x90", "modrm": "0" },
+    "hint": "Set byte 1 jika Overflow"
+  },
+  {
+    "mnemonic": "setno.r64",
+    "encoding": { "opcode": "0x0F,0x91", "modrm": "0" },
+    "hint": "Set byte 1 jika Tidak Overflow"
+  },
+  {
+    "mnemonic": "setp.r64",
+    "encoding": { "opcode": "0x0F,0x9A", "modrm": "0" },
+    "hint": "Set byte 1 jika Paritas Genap"
+  },
+  {
+    "mnemonic": "setpe.r64",
+    "encoding": { "opcode": "0x0F,0x9A", "modrm": "0" },
+    "hint": "Alias setp"
+  },
+  {
+    "mnemonic": "setnp.r64",
+    "encoding": { "opcode": "0x0F,0x9B", "modrm": "0" },
+    "hint": "Set byte 1 jika Paritas Ganjil"
+  },
+  {
+    "mnemonic": "setpo.r64",
+    "encoding": { "opcode": "0x0F,0x9B", "modrm": "0" },
+    "hint": "Alias setnp"
+  },
+  {
+    "mnemonic": "nop",
+    "encoding": { "opcode": "0x90" },
+    "hint": "No Operation"
+  },
+  {
+    "mnemonic": "ud2",
+    "encoding": { "opcode": "0x0F,0x0B" },
+    "hint": "Undefined Instruction (Crash)"
+  },
+  {
+    "mnemonic": "int3",
+    "encoding": { "opcode": "0xCC" },
+    "hint": "Breakpoint / Hard Divider"
+  },
+  {
+    "mnemonic": "call.rel32",
+    "encoding": { "opcode": "0xE8", "imm": "rel32" },
+    "hint": "Panggil fungsi"
+  },
+  {
+    "mnemonic": "call.r64",
+    "encoding": { "rex": "W", "opcode": "0xFF", "modrm": "2" },
+    "hint": "Panggil fungsi dari register"
+  },
+  {
+    "mnemonic": "ret",
+    "encoding": { "opcode": "0xC3" },
+    "hint": "Kembali dari fungsi (kembali)"
+  },
+  {
+    "mnemonic": "kembali",
+    "encoding": { "opcode": "0xC3" },
+    "hint": "Alias ret"
+  },
+  {
+    "mnemonic": "fungsi",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "FUNGSI",
+    "action": "def_label"
+  },
+  {
+    "mnemonic": "tutup_fungsi",
+    "kind": "struct",
+    "type": "scope_end",
+    "scope": "FUNGSI",
+    "action": "ret"
+  },
+  {
+    "mnemonic": "jika_sama",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jne"
+  },
+  {
+    "mnemonic": "jika_beda",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "je"
+  },
+  {
+    "mnemonic": "jika_bukan_nol",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "je"
+  },
+  {
+    "mnemonic": "jika_lebih",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jle"
+  },
+  {
+    "mnemonic": "jika_kurang",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jge"
+  },
+  {
+    "mnemonic": "jika_lebih_sama",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jl"
+  },
+  {
+    "mnemonic": "jika_kurang_sama",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jg"
+  },
+  {
+    "mnemonic": "jika_positif",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "js"
+  },
+  {
+    "mnemonic": "jika_negatif",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jns"
+  },
+  {
+    "mnemonic": "jika_nol",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jne"
+  },
+  {
+    "mnemonic": "jika_diatas",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jbe"
+  },
+  {
+    "mnemonic": "jika_dibawah",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jae"
+  },
+  {
+    "mnemonic": "jika_diatas_sama",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jb"
+  },
+  {
+    "mnemonic": "jika_dibawah_sama",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "ja"
+  },
+  {
+    "mnemonic": "jika_overflow",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jno"
+  },
+  {
+    "mnemonic": "jika_tidak_overflow",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jo"
+  },
+  {
+    "mnemonic": "jika_genap",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jnp"
+  },
+  {
+    "mnemonic": "jika_ganjil",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "IF",
+    "jump_condition": "jp"
+  },
+  {
+    "mnemonic": "lainnya",
+    "kind": "struct",
+    "type": "mid_scope",
+    "scope": "IF",
+    "action": "else"
+  },
+  {
+    "mnemonic": "tutup_jika",
+    "kind": "struct",
+    "type": "scope_end",
+    "scope": "IF",
+    "action": "close_label"
+  },
+  {
+    "mnemonic": "loop",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "LOOP",
+    "action": "label_start"
+  },
+  {
+    "mnemonic": "tutup_loop",
+    "kind": "struct",
+    "type": "scope_end",
+    "scope": "LOOP",
+    "action": "jump_start"
+  },
+  {
+    "mnemonic": "selama",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "action": "label_start"
+  },
+  {
+    "mnemonic": "tutup_selama",
+    "kind": "struct",
+    "type": "scope_end",
+    "scope": "SELAMA",
+    "action": "jump_start"
+  },
+  {
+    "mnemonic": "selama_sama",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "jne"
+  },
+  {
+    "mnemonic": "selama_beda",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "je"
+  },
+  {
+    "mnemonic": "selama_bukan_nol",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "je"
+  },
+  {
+    "mnemonic": "selama_lebih",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "jle"
+  },
+  {
+    "mnemonic": "selama_kurang",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "jge"
+  },
+  {
+    "mnemonic": "selama_lebih_sama",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "jl"
+  },
+  {
+    "mnemonic": "selama_kurang_sama",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "jg"
+  },
+  {
+    "mnemonic": "selama_positif",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "js"
+  },
+  {
+    "mnemonic": "selama_negatif",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "jns"
+  },
+  {
+    "mnemonic": "selama_nol",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "jne"
+  },
+  {
+    "mnemonic": "selama_diatas",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "jbe"
+  },
+  {
+    "mnemonic": "selama_dibawah",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "jae"
+  },
+  {
+    "mnemonic": "selama_diatas_sama",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "jb"
+  },
+  {
+    "mnemonic": "selama_dibawah_sama",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "SELAMA",
+    "jump_condition": "ja"
+  },
+  {
+    "mnemonic": "henti",
+    "kind": "struct",
+    "type": "flow_control",
+    "action": "break"
+  },
+  {
+    "mnemonic": "lanjut",
+    "kind": "struct",
+    "type": "flow_control",
+    "action": "continue"
+  },
+  {
+    "mnemonic": "lompat",
+    "kind": "struct",
+    "type": "flow_control",
+    "action": "jump_explicit"
+  }
+]

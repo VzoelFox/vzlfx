@@ -1,0 +1,386 @@
+; Morph JSON Parser (Recursive Descent)
+; [AI_HINT: Parser JSON penuh yang menghasilkan Tree Node dinamis]
+
+; Node Structure (32 bytes aligned):
+; [0-7]  Type (0=Null, 1=Bool, 2=Num, 3=Str, 4=Arr, 5=Obj)
+; [8-15] Value (Int, Ptr to Str, or Ptr to Child List)
+; [16-23] Key (Ptr to Str, for Object Properties)
+; [24-31] Next Sibling Ptr
+
+; Types
+const JSON_NULL 0
+const JSON_BOOL 1
+const JSON_NUM  2
+const JSON_STR  3
+const JSON_ARR  4
+const JSON_OBJ  5
+
+fungsi seer.json.parse
+    ; Input: rdi (json string pointer)
+    ; Output: rax (root node pointer)
+
+    push rbp
+    mov rbp, rsp
+    push rdi ; Save current ptr
+
+    call seer.json.skip_whitespace
+    ; rdi now at first char
+
+    mov al, [rdi]
+    cmp al, '{'
+    je .parse_obj
+    cmp al, '['
+    je .parse_arr
+    cmp al, '"'
+    je .parse_str
+    cmp al, 't'
+    je .parse_true
+    cmp al, 'f'
+    je .parse_false
+    cmp al, 'n'
+    je .parse_null
+    ; Assume number otherwise
+    jmp .parse_num
+
+    .parse_obj:
+        call seer.json.parse_object
+        jmp .done
+
+    .parse_arr:
+        call seer.json.parse_array
+        jmp .done
+
+    .parse_str:
+        call seer.json.parse_string
+        jmp .done
+
+    .parse_true:
+        ; Alloc Node
+        push rdi
+        mov rdi, 32
+        call seer.mem.alloc
+        pop rdi
+        mov qword [rax], 1 ; Type BOOL
+        mov qword [rax+8], 1 ; Value TRUE
+        add rdi, 4 ; Skip 'true'
+        jmp .done
+
+    .parse_false:
+        push rdi
+        mov rdi, 32
+        call seer.mem.alloc
+        pop rdi
+        mov qword [rax], 1 ; Type BOOL
+        mov qword [rax+8], 0 ; Value FALSE
+        add rdi, 5 ; Skip 'false'
+        jmp .done
+
+    .parse_null:
+        push rdi
+        mov rdi, 32
+        call seer.mem.alloc
+        pop rdi
+        mov qword [rax], 0 ; Type NULL
+        add rdi, 4 ; Skip 'null'
+        jmp .done
+
+    .parse_num:
+        call seer.json.parse_number
+        jmp .done
+
+    .done:
+    leave
+    ret
+tutup_fungsi
+
+fungsi seer.json.skip_whitespace
+    .loop:
+        mov al, [rdi]
+        cmp al, 32 ; Space
+        je .skip
+        cmp al, 9  ; Tab
+        je .skip
+        cmp al, 10 ; LF
+        je .skip
+        cmp al, 13 ; CR
+        je .skip
+        ret
+    .skip:
+        inc rdi
+        jmp .loop
+tutup_fungsi
+
+fungsi seer.json.parse_string
+    ; Input: rdi points to starting "
+    ; Output: rax = Node Ptr, rdi updated past closing "
+
+    push rbx
+    push r12
+
+    ; 1. Alloc Node
+    push rdi
+    mov rdi, 32
+    call seer.mem.alloc
+    pop rdi
+    mov r12, rax ; r12 = Node
+    mov qword [r12], 3 ; Type STR
+
+    inc rdi ; Skip opening "
+    mov rbx, rdi ; Start of content
+
+    ; Scan for closing " (ignore escape for simplicity now)
+    .scan:
+        mov al, [rdi]
+        cmp al, '"'
+        je .found_end
+        inc rdi
+        jmp .scan
+
+    .found_end:
+    ; Create new string buffer and copy (to be safe/mutable)
+    ; Len = rdi - rbx
+    mov rcx, rdi
+    sub rcx, rbx
+
+    push rdi ; Save end ptr
+    push rcx
+    push r12
+
+    mov rdi, rcx
+    inc rdi ; +1 for null
+    call seer.mem.alloc
+    mov rdx, rax ; rdx = new string buf
+
+    pop r12
+    pop rcx
+    push rcx
+    push rsi
+
+    ; Copy
+    mov rsi, rbx
+    mov rdi, rdx
+    rep movsb
+    mov byte [rdi], 0 ; Null term
+
+    pop rsi
+    pop rcx
+    pop rdi ; Restore end ptr (at ")
+
+    mov [r12+8], rdx ; Set Value ptr
+
+    inc rdi ; Skip closing "
+    mov rax, r12
+
+    pop r12
+    pop rbx
+    ret
+tutup_fungsi
+
+fungsi seer.json.parse_number
+    ; Input: rdi points to start of num
+    ; Output: rax = Node, rdi updated
+    ; Implementasi: Atoi manual
+
+    push rbx
+    push r12
+
+    push rdi
+    mov rdi, 32
+    call seer.mem.alloc
+    pop rdi
+    mov r12, rax
+    mov qword [r12], 2 ; Type NUM
+
+    xor rax, rax ; Result
+    xor rbx, rbx ; Clear high bits for byte usage
+
+    .loop_num:
+        mov bl, [rdi]
+        cmp bl, '0'
+        jl .done_num
+        cmp bl, '9'
+        jg .done_num
+
+        sub bl, '0'
+        imul rax, 10
+        add rax, rbx
+
+        inc rdi
+        jmp .loop_num
+
+    .done_num:
+    mov [r12+8], rax
+    mov rax, r12
+
+    pop r12
+    pop rbx
+    ret
+tutup_fungsi
+
+fungsi seer.json.parse_array
+    ; Input: rdi at [
+    ; Output: rax = Node (Arr)
+
+    push rbx
+    push r12 ; Arr Node
+    push r13 ; Last Child
+
+    ; Alloc Node
+    push rdi
+    mov rdi, 32
+    call seer.mem.alloc
+    pop rdi
+    mov r12, rax
+    mov qword [r12], 4 ; Type ARR
+
+    inc rdi ; Skip [
+    call seer.json.skip_whitespace
+
+    cmp byte [rdi], ']'
+    je .empty_arr
+
+    xor r13, r13 ; No child yet
+
+    .loop_item:
+        ; Parse Value
+        push r12
+        push r13
+        call seer.json.parse
+        mov rbx, rax ; Child Node
+        pop r13
+        pop r12
+
+        ; Link Child
+        cmp r13, 0
+        je .first_child
+        ; Append to last sibling
+        mov [r13+24], rbx
+        jmp .update_last
+
+        .first_child:
+        mov [r12+8], rbx ; Head
+
+        .update_last:
+        mov r13, rbx
+
+        call seer.json.skip_whitespace
+        cmp byte [rdi], ','
+        je .next_item
+        cmp byte [rdi], ']'
+        je .done_arr
+        ; Error
+
+        .next_item:
+        inc rdi ; Skip ,
+        call seer.json.skip_whitespace
+        jmp .loop_item
+
+    .done_arr:
+    inc rdi ; Skip ]
+    mov rax, r12
+
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+    .empty_arr:
+    inc rdi
+    mov rax, r12
+    pop r13
+    pop r12
+    pop rbx
+    ret
+tutup_fungsi
+
+fungsi seer.json.parse_object
+    ; Input: rdi at {
+    ; Output: rax = Node (Obj)
+
+    push rbx
+    push r12 ; Obj Node
+    push r13 ; Last Child
+
+    push rdi
+    mov rdi, 32
+    call seer.mem.alloc
+    pop rdi
+    mov r12, rax
+    mov qword [r12], 5 ; Type OBJ
+
+    inc rdi ; Skip {
+    call seer.json.skip_whitespace
+
+    cmp byte [rdi], '}'
+    je .empty_obj
+
+    xor r13, r13
+
+    .loop_prop:
+        ; Parse Key (String)
+        push r12
+        push r13
+        call seer.json.parse_string
+        mov rbx, rax ; Key Node (Str)
+        pop r13
+        pop r12
+
+        call seer.json.skip_whitespace
+        inc rdi ; Skip :
+        call seer.json.skip_whitespace
+
+        ; Parse Value
+        push rbx ; Save Key Node
+        push r12
+        push r13
+        call seer.json.parse
+        mov rdx, rax ; Value Node
+        pop r13
+        pop r12
+        pop rbx
+
+        ; Transfer Key from rbx to rdx (Attach key to value node)
+        mov rcx, [rbx+8] ; Get string ptr from Key Node
+        mov [rdx+16], rcx ; Set Key in Value Node
+
+        ; Note: rbx (Key Node) is leaked/unused now, ideally free it.
+
+        ; Link Value Node
+        cmp r13, 0
+        je .first_prop
+        mov [r13+24], rdx
+        jmp .update_last_prop
+
+        .first_prop:
+        mov [r12+8], rdx
+
+        .update_last_prop:
+        mov r13, rdx
+
+        call seer.json.skip_whitespace
+        cmp byte [rdi], ','
+        je .next_prop
+        cmp byte [rdi], '}'
+        je .done_obj
+
+        .next_prop:
+        inc rdi
+        call seer.json.skip_whitespace
+        jmp .loop_prop
+
+    .done_obj:
+    inc rdi
+    mov rax, r12
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+    .empty_obj:
+    inc rdi
+    mov rax, r12
+    pop r13
+    pop r12
+    pop rbx
+    ret
+tutup_fungsi

@@ -1,0 +1,188 @@
+[
+  {
+    "mnemonic": "sys.fs.read",
+    "kind": "macro",
+    "action": "mov rax, 0; syscall",
+    "hint": "Syscall READ (fd=rdi, buf=rsi, len=rdx) -> rax"
+  },
+  {
+    "mnemonic": "sys.fs.write",
+    "kind": "macro",
+    "action": "mov rax, 1; syscall",
+    "hint": "Syscall WRITE (fd=rdi, buf=rsi, len=rdx) -> rax"
+  },
+  {
+    "mnemonic": "sys.fs.open",
+    "kind": "macro",
+    "action": "mov rax, 2; syscall",
+    "hint": "Syscall OPEN (filename=rdi, flags=rsi, mode=rdx) -> fd"
+  },
+  {
+    "mnemonic": "sys.fs.close",
+    "kind": "macro",
+    "action": "mov rax, 3; syscall",
+    "hint": "Syscall CLOSE (fd=rdi) -> status"
+  },
+  {
+    "mnemonic": "sys.fs.lseek",
+    "kind": "macro",
+    "action": "mov rax, 8; syscall",
+    "hint": "Syscall LSEEK (fd=rdi, offset=rsi, whence=rdx) -> new_offset"
+  },
+  {
+    "mnemonic": "sys.fs.ioctl",
+    "kind": "macro",
+    "action": "mov rax, 16; syscall",
+    "hint": "Syscall IOCTL (fd=rdi, req=rsi, arg=rdx) -> result"
+  },
+  {
+    "mnemonic": "sys.fs.chmod",
+    "kind": "macro",
+    "action": "mov rax, 90; syscall",
+    "hint": "Syscall CHMOD (filename=rdi, mode=rsi) -> status"
+  },
+  {
+    "mnemonic": "sys.mem.mmap",
+    "kind": "macro",
+    "action": "mov rax, 9; syscall",
+    "hint": "Syscall MMAP (addr=rdi, len=rsi, prot=rdx, flags=r10, fd=r8, off=r9) -> addr"
+  },
+  {
+    "mnemonic": "sys.mem.brk",
+    "kind": "macro",
+    "action": "mov rax, 12; syscall",
+    "hint": "Syscall BRK (addr=rdi) -> curr_brk"
+  },
+  {
+    "mnemonic": "sys.net.socket",
+    "kind": "macro",
+    "action": "mov rax, 41; syscall",
+    "hint": "Syscall SOCKET (domain=rdi, type=rsi, proto=rdx) -> sockfd"
+  },
+  {
+    "mnemonic": "sys.net.connect",
+    "kind": "macro",
+    "action": "mov rax, 42; syscall",
+    "hint": "Syscall CONNECT (sockfd=rdi, addr=rsi, addrlen=rdx) -> status"
+  },
+  {
+    "mnemonic": "sys.net.accept",
+    "kind": "macro",
+    "action": "mov rax, 43; syscall",
+    "hint": "Syscall ACCEPT (sockfd=rdi, addr=rsi, addrlen=rdx) -> newfd"
+  },
+  {
+    "mnemonic": "sys.net.sendto",
+    "kind": "macro",
+    "action": "mov rax, 44; syscall",
+    "hint": "Syscall SENDTO (sockfd=rdi, buf=rsi, len=rdx, flags=r10, addr=r8, addrlen=r9) -> sent"
+  },
+  {
+    "mnemonic": "sys.net.recvfrom",
+    "kind": "macro",
+    "action": "mov rax, 45; syscall",
+    "hint": "Syscall RECVFROM (sockfd=rdi, buf=rsi, len=rdx, flags=r10, addr=r8, addrlen=r9) -> received"
+  },
+  {
+    "mnemonic": "sys.net.bind",
+    "kind": "macro",
+    "action": "mov rax, 49; syscall",
+    "hint": "Syscall BIND (sockfd=rdi, addr=rsi, addrlen=rdx) -> status"
+  },
+  {
+    "mnemonic": "sys.net.listen",
+    "kind": "macro",
+    "action": "mov rax, 50; syscall",
+    "hint": "Syscall LISTEN (sockfd=rdi, backlog=rsi) -> status"
+  },
+  {
+    "mnemonic": "sys.net.setsockopt",
+    "kind": "macro",
+    "action": "mov rax, 54; syscall",
+    "hint": "Syscall SETSOCKOPT (sockfd=rdi, level=rsi, optname=rdx, optval=r10, optlen=r8) -> status"
+  },
+  {
+    "mnemonic": "sys.proc.exit",
+    "kind": "macro",
+    "action": "mov rax, 60; syscall",
+    "hint": "Syscall EXIT (status=rdi)"
+  },
+  {
+    "mnemonic": "sys.time.nanosleep",
+    "kind": "macro",
+    "action": "mov rax, 35; syscall",
+    "hint": "Syscall NANOSLEEP (req=rdi, rem=rsi) -> status"
+  },
+  {
+    "mnemonic": "sys.time.setitimer",
+    "kind": "macro",
+    "action": "mov rax, 38; syscall",
+    "hint": "Syscall SETITIMER (which=rdi, new=rsi, old=rdx) -> status"
+  },
+  {
+    "name": "AF_INET",
+    "kind": "const",
+    "value": 2,
+    "hint": "Address Family IPv4"
+  },
+  {
+    "name": "AF_INET6",
+    "kind": "const",
+    "value": 10,
+    "hint": "Address Family IPv6"
+  },
+  {
+    "name": "SOCK_STREAM",
+    "kind": "const",
+    "value": 1,
+    "hint": "Socket Type TCP"
+  },
+  {
+    "name": "SOCK_DGRAM",
+    "kind": "const",
+    "value": 2,
+    "hint": "Socket Type UDP"
+  },
+  {
+    "name": "IPPROTO_IP",
+    "kind": "const",
+    "value": 0,
+    "hint": "Protocol IP"
+  },
+  {
+    "name": "IPPROTO_TCP",
+    "kind": "const",
+    "value": 6,
+    "hint": "Protocol TCP"
+  },
+  {
+    "name": "IPPROTO_UDP",
+    "kind": "const",
+    "value": 17,
+    "hint": "Protocol UDP"
+  },
+  {
+    "name": "O_RDONLY",
+    "kind": "const",
+    "value": 0,
+    "hint": "Open Read Only"
+  },
+  {
+    "name": "O_WRONLY",
+    "kind": "const",
+    "value": 1,
+    "hint": "Open Write Only"
+  },
+  {
+    "name": "O_RDWR",
+    "kind": "const",
+    "value": 2,
+    "hint": "Open Read Write"
+  },
+  {
+    "name": "O_CREAT",
+    "kind": "const",
+    "value": 64,
+    "hint": "Create if not exists (0x40)"
+  }
+]

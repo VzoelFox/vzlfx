@@ -1,0 +1,50 @@
+[
+  {
+    "name": "FBIOGET_VSCREENINFO",
+    "kind": "const",
+    "value": 17920,
+    "hint": "IOCTL: Get Variable Screen Info (0x4600)"
+  },
+  {
+    "name": "FBIOPUT_VSCREENINFO",
+    "kind": "const",
+    "value": 17921,
+    "hint": "IOCTL: Set Variable Screen Info (0x4601)"
+  },
+  {
+    "name": "FBIOGET_FSCREENINFO",
+    "kind": "const",
+    "value": 17922,
+    "hint": "IOCTL: Get Fixed Screen Info (0x4602)"
+  },
+  {
+    "mnemonic": "sys.gfx.ioctl_get_var",
+    "kind": "macro",
+    "action": "mov rax, 16; mov rsi, 17920; syscall",
+    "hint": "Get Screen Info (fd=rdi, struct_ptr=rdx)"
+  },
+  {
+    "mnemonic": "sys.gfx.ioctl_get_fix",
+    "kind": "macro",
+    "action": "mov rax, 16; mov rsi, 17922; syscall",
+    "hint": "Get Fixed Info (fd=rdi, struct_ptr=rdx)"
+  },
+  {
+    "name": "FB_TYPE_PACKED_PIXELS",
+    "kind": "const",
+    "value": 0,
+    "hint": "Tipe Framebuffer Packed Pixels"
+  },
+  {
+    "name": "FB_VISUAL_TRUECOLOR",
+    "kind": "const",
+    "value": 2,
+    "hint": "Visual TrueColor"
+  },
+  {
+    "mnemonic": "gfx.pixel.plot",
+    "kind": "macro",
+    "action": "mov [rdi], eax",
+    "hint": "Plot Pixel 32-bit (ARGB) ke address RDI"
+  }
+]
