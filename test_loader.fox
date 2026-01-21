@@ -1,0 +1,13 @@
+; File Test untuk Loader
+; Ini adalah file teks biasa yang berisi kode .fox
+; Loader akan membaca ini dan memecahnya menjadi token
+
+fungsi test_func
+    mov rax, 1
+    call seer.print.int
+tutup_fungsi
+
+loop main_loop
+    mov rdi, "Halo Dunia"
+    call seer.print.text
+tutup_loop

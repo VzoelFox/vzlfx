@@ -1,0 +1,67 @@
+[
+  {
+    "mnemonic": "syscall",
+    "encoding": { "opcode": "0x0F,0x05" },
+    "hint": "Panggil System Call kernel Linux (Ring 0 transition)"
+  },
+  {
+    "mnemonic": "in.al.imm8",
+    "encoding": { "opcode": "0xE4", "imm": "imm8" },
+    "hint": "Baca byte dari port I/O ke AL"
+  },
+  {
+    "mnemonic": "in.ax.imm8",
+    "encoding": { "opcode": "0x66,0xE5", "imm": "imm8" },
+    "hint": "Baca word dari port I/O ke AX"
+  },
+  {
+    "mnemonic": "in.eax.imm8",
+    "encoding": { "opcode": "0xE5", "imm": "imm8" },
+    "hint": "Baca dword dari port I/O ke EAX"
+  },
+  {
+    "mnemonic": "in.al.dx",
+    "encoding": { "opcode": "0xEC" },
+    "hint": "Baca byte dari port (DX) ke AL"
+  },
+  {
+    "mnemonic": "in.ax.dx",
+    "encoding": { "opcode": "0x66,0xED" },
+    "hint": "Baca word dari port (DX) ke AX"
+  },
+  {
+    "mnemonic": "in.eax.dx",
+    "encoding": { "opcode": "0xED" },
+    "hint": "Baca dword dari port (DX) ke EAX"
+  },
+  {
+    "mnemonic": "out.imm8.al",
+    "encoding": { "opcode": "0xE6", "imm": "imm8" },
+    "hint": "Tulis byte AL ke port I/O"
+  },
+  {
+    "mnemonic": "out.imm8.ax",
+    "encoding": { "opcode": "0x66,0xE7", "imm": "imm8" },
+    "hint": "Tulis word AX ke port I/O"
+  },
+  {
+    "mnemonic": "out.imm8.eax",
+    "encoding": { "opcode": "0xE7", "imm": "imm8" },
+    "hint": "Tulis dword EAX ke port I/O"
+  },
+  {
+    "mnemonic": "out.dx.al",
+    "encoding": { "opcode": "0xEE" },
+    "hint": "Tulis byte AL ke port (DX)"
+  },
+  {
+    "mnemonic": "out.dx.ax",
+    "encoding": { "opcode": "0x66,0xEF" },
+    "hint": "Tulis word AX ke port (DX)"
+  },
+  {
+    "mnemonic": "out.dx.eax",
+    "encoding": { "opcode": "0xEF" },
+    "hint": "Tulis dword EAX ke port (DX)"
+  }
+]
