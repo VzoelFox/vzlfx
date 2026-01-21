@@ -1,7 +1,7 @@
 ; Morph Seer UTF-8 & Unicode Support
 ; [AI_HINT: Penanganan teks multi-byte penuh untuk menggantikan ketergantungan Python]
 
-fungsi seer.string.utf8_decode
+seer.string.utf8_decode:
     ; Input: rdi (pointer ke byte stream)
     ; Output:
     ;   rax = Unicode Code Point (32-bit integer)
@@ -111,9 +111,8 @@ fungsi seer.string.utf8_decode
     pop rdx
     pop rbx
     ret
-tutup_fungsi
 
-fungsi seer.string.utf8_next
+seer.string.utf8_next:
     ; Input: rdi (pointer string)
     ; Output: rdi (pointer ke karakter berikutnya)
     ; Memanggil decode untuk dapat panjang, lalu memajukan pointer
@@ -128,4 +127,3 @@ fungsi seer.string.utf8_next
     pop rcx
     pop rax
     ret
-tutup_fungsi
