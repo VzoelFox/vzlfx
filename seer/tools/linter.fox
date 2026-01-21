@@ -15,13 +15,14 @@ fungsi seer.linter.print_error
     ; Simpan argumen yang akan ketimpa
     push rdi    ; Code ID
     push rsi    ; Filename
+    push rdx    ; Line Number
+    push rcx    ; Column Number
     push r8     ; Snippet
 
     ; 1. Header Error (Merah)
     mov rdi, ANSI_RED
     call seer.print.text
 
-    ; [NOTE: Compiler harus ubah "String" jadi pointer ke .data section]
     mov rdi, "ERROR ["
     call seer.print.text
 
@@ -48,7 +49,17 @@ fungsi seer.linter.print_error
     mov rdi, ":"
     call seer.print.text
 
-    ; TODO: Print Integer (rdx, rcx) -> butuh seer.print.int
+    ; Print Line Number
+    mov rdi, [rbp-24]
+    call seer.print.int
+
+    mov rdi, ":"
+    call seer.print.text
+
+    ; Print Column Number
+    mov rdi, [rbp-32]
+    call seer.print.int
+
     call seer.print.nl
 
     ; 3. Snippet Code
@@ -59,7 +70,7 @@ fungsi seer.linter.print_error
     mov rdi, "   | "
     call seer.print.text
 
-    mov rdi, [rbp-24]  ; Snippet
+    mov rdi, [rbp-40]  ; Snippet
     call seer.print.text
     call seer.print.nl
 
@@ -70,7 +81,10 @@ fungsi seer.linter.print_error
     mov rdi, ANSI_YELLOW
     call seer.print.text
 
-    ; Placeholder loop spasi
+    ; Print Spaces (sebanyak rcx/column)
+    ; TODO: Implementasi loop spasi sederhana
+    ; Karena ini macro, loop label harus unik atau local.
+    ; Kita skip dulu, print panah langsung.
 
     mov rdi, "^ Di sini"
     call seer.print.text
