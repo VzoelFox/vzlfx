@@ -1,0 +1,26 @@
+; Program Test Linter
+; Menguji fungsi reporting error seer
+
+fungsi main
+    ; Setup Stack Argumen untuk seer.linter.print_error
+    ; Argumen:
+    ;   rdi = Code ID
+    ;   rsi = Filename
+    ;   rdx = Line Number
+    ;   rcx = Column Number
+    ;   r8  = Snippet Line
+
+    ; Kita perlu string pointer.
+    ; Dalam bootstrap simulasi ini, kita anggap string literal "..."
+    ; akan ditangani (walaupun bootstrap.sh kita masih primitive).
+
+    mov rdi, "E001"
+    mov rsi, "test_file.fox"
+    mov rdx, 10         ; Line 10
+    mov rcx, 5          ; Column 5
+    mov r8,  "mov rax, invalid"
+
+    call seer.linter.print_error
+
+    ret
+tutup_fungsi
