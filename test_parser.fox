@@ -1,0 +1,41 @@
+; Program Test Parser
+; Menguji Memory Allocator dan JSON Parser
+
+fungsi main
+    ; 1. Init Memory
+    call seer.mem.init
+    mov rdi, "Heap Init OK."
+    call seer.print.text
+    call seer.print.nl
+
+    ; 2. Test JSON Parse
+    ; JSON: {"key": "value", "num": 123}
+    ; Kita buat string di stack/data
+    mov rdi, "{\"name\":\"Morph\",\"ver\":1}"
+    call seer.json.parse
+
+    mov r12, rax ; Root Node (OBJ)
+
+    mov rdi, "Parsed Root Node: "
+    call seer.print.text
+    mov rdi, r12
+    call seer.print.hex
+    call seer.print.nl
+
+    ; Traverse Child 1
+    mov rbx, [r12+8] ; First child
+
+    mov rdi, "Child 1 Key: "
+    call seer.print.text
+    mov rdi, [rbx+16] ; Key
+    call seer.print.text
+    call seer.print.nl
+
+    mov rdi, "Child 1 Val: "
+    call seer.print.text
+    mov rdi, [rbx+8] ; Value (String ptr)
+    call seer.print.text
+    call seer.print.nl
+
+    ret
+tutup_fungsi
