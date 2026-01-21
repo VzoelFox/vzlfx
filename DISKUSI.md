@@ -2,60 +2,34 @@
 
 Halo! Sesuai instruksi, saya telah mengambil `Brainlib` dari repositori `morphx84_64`, memperluasnya dengan instruksi kernel, dan kini mulai membangun layer utilitas "Seer".
 
-## Update Fase 5: Standarisasi Ekstensi File
+## Update Fase 6: Refactoring Struktur Direktori
 
-Untuk memperjelas struktur proyek dan memisahkan antara "Definisi Instruksi" dengan "Kode Program", kita telah menetapkan konvensi baru:
+Untuk menjaga kebersihan arsitektur, kita telah memisahkan antara fungsi utilitas umum dengan fungsi inti "Seer" (Output/Debug).
 
-### Konvensi Ekstensi File
+### Struktur Direktori Baru
 
-1.  **`.json` (Definisi ISA - Brainlib)**
-    *   Digunakan untuk mendefinisikan instruksi mesin, opcode, operand, dan metadata AI Hint.
-    *   Lokasi: `Brainlib/*.json`.
-    *   Contoh:
-        ```json
-        { "mnemonic": "add.r64.r64", "encoding": {...}, "hint": "..." }
-        ```
+1.  **`Brainlib/` (The Core ISA)**
+    *   `*.json`: Definisi instruksi mesin (aritmatika, kernel, grafik, dll).
+    *   *Dibekukan sebagai Ground Truth.*
 
-2.  **`.fox` (Source Code - Seer & Userland)**
-    *   Digunakan untuk menulis logika program, wrapper, dan utilitas.
-    *   Lokasi: `seer/**/*.fox` dan kode user nanti.
-    *   Gaya Penulisan: Eksplisit dengan penutup blok yang jelas (mirip referensi `parser.fox`).
-    *   Contoh Struktur:
-        ```asm
-        fungsi nama_fungsi
-            ; ... instruksi ...
-            jika_sama
-                ; ... blok ...
-            tutup_jika
-            loop
-                ; ... blok ...
-            tutup_loop
-            ret
-        tutup_fungsi
-        ```
+2.  **`seer/` (The Vision Layer - Output/Debug)**
+    *   `print/std.fox`: Wrapper syscall output standar (Text, Int, Hex).
+    *   `emit/core.fox`: Utilitas code generation (emit byte/opcode).
+    *   `tools/linter.fox`: Error reporting dengan warna dan pointer.
+    *   `data/messages.json`: Database pesan error netral.
 
-### Filosofi "Seer" (Sang Pelihat)
+3.  **`utils/` (General Utilities)**
+    *   `string/compare.fox`: Fungsi perbandingan string (strcmp manual).
+    *   `string/utf.fox`: Decoder UTF-8 manual (1-4 byte support).
 
-`seer` bukan library standar biasa yang penuh abstraksi ("magic"). Sebaliknya, `seer` adalah kumpulan wrapper transparan yang menjembatani instruksi dasar dengan kebutuhan fungsional.
+4.  **`boot/` (System Boot)**
+    *   `loader.fox`: Native Loader yang menggunakan syscall `mmap` dan `read` untuk memuat file sumber dan melakukan tokenisasi awal tanpa Python.
 
-**Prinsip Utama: "Apa yang dijalankan = Apa yang ditulis"**
--   Tidak ada fungsi `printf` yang melakukan formatting kompleks di balik layar.
--   Tidak ada alokasi memori implisit yang menyebabkan *heisenbug*.
--   Kode bersifat eksplisit dan jujur.
+5.  **`externlib/`**
+    *   Wadah untuk library eksternal masa depan.
 
-### Struktur Direktori
+### Toolchain
 
-1.  **`Brainlib/` (The Core)**
-    *   Berisi definisi instruksi dasar x86-64 dan macro syscall kernel dalam format **JSON**.
-    *   Dibekukan sebagai *Ground Truth*.
+*   **`bootstrap.sh`**: Script bash+python sementara yang berfungsi sebagai compiler. Ia menggabungkan file `.fox`, melakukan substitusi macro sederhana, dan mengekstrak string literal ke segmen data `.asm` sebelum dikompilasi oleh FASM.
 
-2.  **`seer/` (The Utility Layer)**
-    *   **`seer/print/std.fox`**: Wrapper output standar.
-        *   `seer.print.text`: Mencetak string dengan menghitung panjang secara manual (loop) dan memanggil syscall `write`. Transparan.
-        *   `seer.print.raw`: Mencetak buffer byte mentah.
-        *   `seer.print.nl`: Mencetak newline.
-    *   **`seer/emit/core.fox`**: Utilitas code generation.
-        *   Menyediakan instruksi untuk menulis byte/opcode ke buffer memori (`emit.byte`, `emit.op.ret`, dll).
-        *   Ini adalah cikal bakal untuk *self-hosted parser/compiler*.
-
-Saya siap menunggu arahan Anda selanjutnya untuk mewujudkan visi Native AI ini!
+Saya siap menunggu arahan Anda selanjutnya!

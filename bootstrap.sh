@@ -15,7 +15,7 @@ fi
 # Detect if we are building the loader, we need to inject compare.fox too
 EXTRA_LIBS=""
 if [[ "$SRC_FILE" == *"loader.fox"* ]]; then
-    EXTRA_LIBS="seer/string/compare.fox"
+    EXTRA_LIBS="utils/string/compare.fox utils/string/utf.fox"
 fi
 
 echo "[Bootstrap] Compiling $SRC_FILE..."
