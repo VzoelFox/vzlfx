@@ -1,0 +1,67 @@
+[
+  {
+    "mnemonic": "enter",
+    "encoding": { "opcode": "0xC8", "imm": "imm16,0" },
+    "hint": "Buat stack frame baru (push rbp, mov rbp, rsp, sub rsp, imm)"
+  },
+  {
+    "mnemonic": "leave",
+    "encoding": { "opcode": "0xC9" },
+    "hint": "Hancurkan stack frame (mov rsp, rbp, pop rbp)"
+  },
+  {
+    "mnemonic": "pushfq",
+    "encoding": { "opcode": "0x9C" },
+    "hint": "Dorong register RFLAGS ke stack"
+  },
+  {
+    "mnemonic": "popfq",
+    "encoding": { "opcode": "0x9D" },
+    "hint": "Ambil nilai stack ke register RFLAGS"
+  },
+  {
+    "mnemonic": "sahf",
+    "encoding": { "opcode": "0x9E" },
+    "hint": "Simpan AH ke Flags (SF, ZF, AF, PF, CF)"
+  },
+  {
+    "mnemonic": "lahf",
+    "encoding": { "opcode": "0x9F" },
+    "hint": "Muat Flags ke AH"
+  },
+  {
+    "mnemonic": "lock",
+    "encoding": { "opcode": "0xF0" },
+    "hint": "Prefix kunci bus untuk operasi atomik"
+  },
+  {
+    "mnemonic": "pause",
+    "encoding": { "opcode": "0xF3,0x90" },
+    "hint": "Beri jeda pada spin-loop (hemat daya)"
+  },
+  {
+    "mnemonic": "mfence",
+    "encoding": { "opcode": "0x0F,0xAE,0xF0" },
+    "hint": "Memory Fence (Tunggu semua akses memori selesai)"
+  },
+  {
+    "mnemonic": "lfence",
+    "encoding": { "opcode": "0x0F,0xAE,0xE8" },
+    "hint": "Load Fence (Tunggu akses baca selesai)"
+  },
+  {
+    "mnemonic": "sfence",
+    "encoding": { "opcode": "0x0F,0xAE,0xF8" },
+    "hint": "Store Fence (Tunggu akses tulis selesai)"
+  },
+  {
+    "mnemonic": "rdtsc",
+    "encoding": { "opcode": "0x0F,0x31" },
+    "hint": "Baca Time-Stamp Counter ke EDX:EAX"
+  },
+  {
+    "mnemonic": "cpuid",
+    "encoding": { "opcode": "0x0F,0xA2" },
+    "hint": "Identifikasi fitur CPU (input: EAX)"
+  }
+]

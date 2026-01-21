@@ -1,0 +1,144 @@
+[
+  {
+    "mnemonic": "mov.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x89", "modrm": "reg,reg" },
+    "hint": "Salin nilai register ke register"
+  },
+  {
+    "mnemonic": "mov.r64.imm64",
+    "encoding": { "rex": "W", "opcode": "0xB8", "reg_in_op": true, "imm": "imm64" },
+    "hint": "Salin angka 64-bit ke register"
+  },
+  {
+    "mnemonic": "mov.r64.imm32",
+    "encoding": { "rex": "W", "opcode": "0xC7", "modrm": "0", "imm": "imm32" },
+    "hint": "Salin angka 32-bit ke register"
+  },
+  {
+    "mnemonic": "mov.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x8B", "modrm": "reg,mem" },
+    "hint": "Baca dari memori ke register"
+  },
+  {
+    "mnemonic": "mov.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x89", "modrm": "mem,reg" },
+    "hint": "Tulis register ke memori"
+  },
+  {
+    "mnemonic": "mov.mem.imm32",
+    "encoding": { "rex": "W", "opcode": "0xC7", "modrm": "0", "imm": "imm32" },
+    "hint": "Tulis angka 32-bit ke memori"
+  },
+  {
+    "mnemonic": "movb.mem.r64",
+    "encoding": { "opcode": "0x88", "modrm": "mem,reg" },
+    "hint": "Tulis byte (low 8-bit) register ke memori"
+  },
+  {
+    "mnemonic": "movzx.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xB6", "modrm": "reg,reg" },
+    "hint": "Salin byte ke register 64-bit dengan nol (Zero Extend)"
+  },
+  {
+    "mnemonic": "movzx.r64.byte",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xB6", "modrm": "reg,reg" },
+    "hint": "Alias"
+  },
+  {
+    "mnemonic": "movzx.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xB6", "modrm": "reg,mem" },
+    "hint": "Baca byte memori ke register 64-bit dengan nol"
+  },
+  {
+    "mnemonic": "movzx.r64.mem16",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xB7", "modrm": "reg,mem" },
+    "hint": "Baca word (16-bit) memori ke register 64-bit dengan nol"
+  },
+  {
+    "mnemonic": "movsx.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBE", "modrm": "reg,reg" },
+    "hint": "Salin byte ke register 64-bit dengan tanda (Sign Extend)"
+  },
+  {
+    "mnemonic": "movsx.r64.byte",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBE", "modrm": "reg,reg" },
+    "hint": "Alias"
+  },
+  {
+    "mnemonic": "movsx.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBE", "modrm": "reg,mem" },
+    "hint": "Baca byte memori ke register 64-bit dengan tanda"
+  },
+  {
+    "mnemonic": "movsxd.r64.r32",
+    "encoding": { "rex": "W", "opcode": "0x63", "modrm": "reg,reg" },
+    "hint": "Salin dword (32-bit) ke register 64-bit dengan tanda"
+  },
+  {
+    "mnemonic": "movsxd.r64.mem32",
+    "encoding": { "rex": "W", "opcode": "0x63", "modrm": "reg,mem" },
+    "hint": "Baca dword memori ke register 64-bit dengan tanda"
+  },
+  {
+    "mnemonic": "cdqe",
+    "encoding": { "rex": "W", "opcode": "0x98" },
+    "hint": "Convert Dword to Qword (EAX -> RAX Signed)"
+  },
+  {
+    "mnemonic": "cwde",
+    "encoding": { "opcode": "0x98" },
+    "hint": "Convert Word to Dword (AX -> EAX Signed)"
+  },
+  {
+    "mnemonic": "cbw",
+    "encoding": { "opcode": "0x66,0x98" },
+    "hint": "Convert Byte to Word (AL -> AX Signed)"
+  },
+  {
+    "mnemonic": "cqo",
+    "encoding": { "rex": "W", "opcode": "0x99" },
+    "hint": "Convert Quad to Oct (RAX -> RDX:RAX Signed)"
+  },
+  {
+    "mnemonic": "push.r64",
+    "encoding": { "opcode": "0x50", "reg_in_op": true },
+    "hint": "Dorong register ke stack"
+  },
+  {
+    "mnemonic": "push.imm32",
+    "encoding": { "opcode": "0x68", "imm": "imm32" },
+    "hint": "Dorong angka 32-bit ke stack"
+  },
+  {
+    "mnemonic": "push.imm8",
+    "encoding": { "opcode": "0x6A", "imm": "imm8" },
+    "hint": "Dorong angka 8-bit ke stack"
+  },
+  {
+    "mnemonic": "pop.r64",
+    "encoding": { "opcode": "0x58", "reg_in_op": true },
+    "hint": "Ambil dari stack ke register"
+  },
+  {
+    "mnemonic": "lea.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x8D", "modrm": "reg,mem" },
+    "hint": "Hitung alamat efektif"
+  },
+  {
+    "mnemonic": "xchg.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x87", "modrm": "reg,reg" },
+    "hint": "Tukar isi dua register"
+  },
+  {
+    "mnemonic": "struktur",
+    "kind": "struct",
+    "type": "scope_start",
+    "scope": "STRUKTUR"
+  },
+  {
+    "mnemonic": "tutup_struktur",
+    "kind": "struct",
+    "type": "scope_end",
+    "scope": "STRUKTUR"
+  }
+]
