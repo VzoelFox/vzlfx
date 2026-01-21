@@ -1,0 +1,56 @@
+[
+  {
+    "name": "ANSI_RESET",
+    "kind": "const_str",
+    "value": "\u001b[0m",
+    "hint": "Reset semua atribut terminal"
+  },
+  {
+    "name": "ANSI_RED",
+    "kind": "const_str",
+    "value": "\u001b[31m",
+    "hint": "Warna teks Merah"
+  },
+  {
+    "name": "ANSI_GREEN",
+    "kind": "const_str",
+    "value": "\u001b[32m",
+    "hint": "Warna teks Hijau"
+  },
+  {
+    "name": "ANSI_YELLOW",
+    "kind": "const_str",
+    "value": "\u001b[33m",
+    "hint": "Warna teks Kuning"
+  },
+  {
+    "name": "ANSI_BLUE",
+    "kind": "const_str",
+    "value": "\u001b[34m",
+    "hint": "Warna teks Biru"
+  },
+  {
+    "name": "ANSI_BOLD",
+    "kind": "const_str",
+    "value": "\u001b[1m",
+    "hint": "Teks Tebal"
+  },
+  {
+    "mnemonic": "term.color.red",
+    "kind": "macro",
+    "action": "call seer.print.text(ANSI_RED)",
+    "hint": "Set terminal ke Merah"
+  },
+  {
+    "mnemonic": "term.color.reset",
+    "kind": "macro",
+    "action": "call seer.print.text(ANSI_RESET)",
+    "hint": "Reset terminal"
+  },
+  {
+    "mnemonic": "term.cursor.up",
+    "kind": "macro",
+    "action": "call seer.print.text(\"\u001b[1A\")",
+    "hint": "Kursor naik 1 baris"
+  }
+]

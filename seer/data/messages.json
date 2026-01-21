@@ -1,0 +1,24 @@
+{
+  "errors": {
+    "E001": {
+      "msg": "Sintaks tidak dikenali",
+      "hint": "Cek kembali penulisan mnemonic atau struktur blok"
+    },
+    "E002": {
+      "msg": "Blok tidak ditutup",
+      "hint": "Setiap 'jika', 'loop', atau 'fungsi' harus memiliki penutup (tutup_*)"
+    },
+    "E003": {
+      "msg": "Register tidak valid",
+      "hint": "Pastikan operand sesuai dengan arsitektur x86-64 (misal: rax, rbx)"
+    }
+  },
+  "hints": {
+    "H001": {
+      "msg": "Gunakan register akumulator (RAX) untuk operasi aritmatika agar lebih efisien"
+    },
+    "H002": {
+      "msg": "Pastikan stack aligned 16-byte sebelum memanggil fungsi eksternal"
+    }
+  }
+}

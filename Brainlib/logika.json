@@ -1,0 +1,402 @@
+[
+  {
+    "mnemonic": "and.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x21", "modrm": "reg,reg" },
+    "hint": "Logika AND bitwise register dengan register (&)"
+  },
+  {
+    "mnemonic": "and.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x23", "modrm": "reg,mem" },
+    "hint": "Logika AND bitwise register dengan memori (&)"
+  },
+  {
+    "mnemonic": "and.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x21", "modrm": "mem,reg" },
+    "hint": "Logika AND bitwise memori dengan register (&)"
+  },
+  {
+    "mnemonic": "and.r64.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "4", "imm": "imm32" },
+    "hint": "Logika AND bitwise register dengan angka 32-bit (&)"
+  },
+  {
+    "mnemonic": "and.mem.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "4", "imm": "imm32" },
+    "hint": "Logika AND bitwise memori dengan angka 32-bit (&)"
+  },
+  {
+    "mnemonic": "and.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "4", "imm": "imm8" },
+    "hint": "Logika AND bitwise register dengan angka 8-bit (&)"
+  },
+  {
+    "mnemonic": "and.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "4", "imm": "imm8" },
+    "hint": "Logika AND bitwise memori dengan angka 8-bit (&)"
+  },
+  {
+    "mnemonic": "or.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x09", "modrm": "reg,reg" },
+    "hint": "Logika OR bitwise register dengan register (|)"
+  },
+  {
+    "mnemonic": "or.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x0B", "modrm": "reg,mem" },
+    "hint": "Logika OR bitwise register dengan memori (|)"
+  },
+  {
+    "mnemonic": "or.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x09", "modrm": "mem,reg" },
+    "hint": "Logika OR bitwise memori dengan register (|)"
+  },
+  {
+    "mnemonic": "or.r64.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "1", "imm": "imm32" },
+    "hint": "Logika OR bitwise register dengan angka 32-bit (|)"
+  },
+  {
+    "mnemonic": "or.mem.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "1", "imm": "imm32" },
+    "hint": "Logika OR bitwise memori dengan angka 32-bit (|)"
+  },
+  {
+    "mnemonic": "or.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "1", "imm": "imm8" },
+    "hint": "Logika OR bitwise register dengan angka 8-bit (|)"
+  },
+  {
+    "mnemonic": "or.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "1", "imm": "imm8" },
+    "hint": "Logika OR bitwise memori dengan angka 8-bit (|)"
+  },
+  {
+    "mnemonic": "xor.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x31", "modrm": "reg,reg" },
+    "hint": "Logika XOR bitwise register dengan register (^)"
+  },
+  {
+    "mnemonic": "xor.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x33", "modrm": "reg,mem" },
+    "hint": "Logika XOR bitwise register dengan memori (^)"
+  },
+  {
+    "mnemonic": "xor.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x31", "modrm": "mem,reg" },
+    "hint": "Logika XOR bitwise memori dengan register (^)"
+  },
+  {
+    "mnemonic": "xor.r64.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "6", "imm": "imm32" },
+    "hint": "Logika XOR bitwise register dengan angka 32-bit (^)"
+  },
+  {
+    "mnemonic": "xor.mem.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "6", "imm": "imm32" },
+    "hint": "Logika XOR bitwise memori dengan angka 32-bit (^)"
+  },
+  {
+    "mnemonic": "xor.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "6", "imm": "imm8" },
+    "hint": "Logika XOR bitwise register dengan angka 8-bit (^)"
+  },
+  {
+    "mnemonic": "xor.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "6", "imm": "imm8" },
+    "hint": "Logika XOR bitwise memori dengan angka 8-bit (^)"
+  },
+  {
+    "mnemonic": "not.r64",
+    "encoding": { "rex": "W", "opcode": "0xF7", "modrm": "2" },
+    "hint": "Logika NOT (negasi bitwise) register (~)"
+  },
+  {
+    "mnemonic": "not.mem64",
+    "encoding": { "rex": "W", "opcode": "0xF7", "modrm": "2" },
+    "hint": "Logika NOT (negasi bitwise) memori (~)"
+  },
+  {
+    "mnemonic": "shl.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "4", "imm": "imm8" },
+    "hint": "Geser bit ke kiri (shift left) sebesar immediate 8-bit (<<)"
+  },
+  {
+    "mnemonic": "shl.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "4", "imm": "imm8" },
+    "hint": "Geser bit ke kiri memori (shift left) sebesar immediate 8-bit (<<)"
+  },
+  {
+    "mnemonic": "shl.r64.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "4" },
+    "hint": "Geser bit ke kiri (shift left) sebesar isi register CL (<<)"
+  },
+  {
+    "mnemonic": "shl.mem.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "4" },
+    "hint": "Geser bit ke kiri memori (shift left) sebesar isi register CL (<<)"
+  },
+  {
+    "mnemonic": "shl.r64",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "4" },
+    "hint": "Alias shl.r64.cl"
+  },
+  {
+    "mnemonic": "sal.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "4", "imm": "imm8" },
+    "hint": "Alias shl (<<)"
+  },
+  {
+    "mnemonic": "sal.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "4", "imm": "imm8" },
+    "hint": "Alias shl (<<)"
+  },
+  {
+    "mnemonic": "sal.r64.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "4" },
+    "hint": "Alias shl (<<)"
+  },
+  {
+    "mnemonic": "sal.mem.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "4" },
+    "hint": "Alias shl (<<)"
+  },
+  {
+    "mnemonic": "shr.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "5", "imm": "imm8" },
+    "hint": "Geser bit ke kanan (logical shift right) sebesar immediate 8-bit (>>)"
+  },
+  {
+    "mnemonic": "shr.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "5", "imm": "imm8" },
+    "hint": "Geser bit ke kanan memori (logical shift right) sebesar immediate 8-bit (>>)"
+  },
+  {
+    "mnemonic": "shr.r64.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "5" },
+    "hint": "Geser bit ke kanan (logical shift right) sebesar isi register CL (>>)"
+  },
+  {
+    "mnemonic": "shr.mem.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "5" },
+    "hint": "Geser bit ke kanan memori (logical shift right) sebesar isi register CL (>>)"
+  },
+  {
+    "mnemonic": "shr.r64",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "5" },
+    "hint": "Alias shr.r64.cl"
+  },
+  {
+    "mnemonic": "sar.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "7", "imm": "imm8" },
+    "hint": "Geser bit ke kanan (arithmetic shift right) sebesar immediate 8-bit"
+  },
+  {
+    "mnemonic": "sar.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "7", "imm": "imm8" },
+    "hint": "Geser bit ke kanan memori (arithmetic shift right) sebesar immediate 8-bit"
+  },
+  {
+    "mnemonic": "sar.r64.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "7" },
+    "hint": "Geser bit ke kanan (arithmetic shift right) sebesar isi register CL"
+  },
+  {
+    "mnemonic": "sar.mem.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "7" },
+    "hint": "Geser bit ke kanan memori (arithmetic shift right) sebesar isi register CL"
+  },
+  {
+    "mnemonic": "sar.r64",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "7" },
+    "hint": "Alias sar.r64.cl"
+  },
+  {
+    "mnemonic": "rol.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "0", "imm": "imm8" },
+    "hint": "Putar bit ke kiri (rotate left) sebesar immediate 8-bit"
+  },
+  {
+    "mnemonic": "rol.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "0", "imm": "imm8" },
+    "hint": "Putar bit ke kiri memori (rotate left) sebesar immediate 8-bit"
+  },
+  {
+    "mnemonic": "rol.r64.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "0" },
+    "hint": "Putar bit ke kiri (rotate left) sebesar isi register CL"
+  },
+  {
+    "mnemonic": "rol.mem.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "0" },
+    "hint": "Putar bit ke kiri memori (rotate left) sebesar isi register CL"
+  },
+  {
+    "mnemonic": "ror.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "1", "imm": "imm8" },
+    "hint": "Putar bit ke kanan (rotate right) sebesar immediate 8-bit"
+  },
+  {
+    "mnemonic": "ror.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "1", "imm": "imm8" },
+    "hint": "Putar bit ke kanan memori (rotate right) sebesar immediate 8-bit"
+  },
+  {
+    "mnemonic": "ror.r64.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "1" },
+    "hint": "Putar bit ke kanan (rotate right) sebesar isi register CL"
+  },
+  {
+    "mnemonic": "ror.mem.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "1" },
+    "hint": "Putar bit ke kanan memori (rotate right) sebesar isi register CL"
+  },
+  {
+    "mnemonic": "rcl.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "2", "imm": "imm8" },
+    "hint": "Putar bit ke kiri melalui Carry (rotate carry left)"
+  },
+  {
+    "mnemonic": "rcl.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "2", "imm": "imm8" },
+    "hint": "Putar bit ke kiri memori melalui Carry (rotate carry left)"
+  },
+  {
+    "mnemonic": "rcl.r64.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "2" },
+    "hint": "Putar bit ke kiri melalui Carry (rotate carry left)"
+  },
+  {
+    "mnemonic": "rcl.mem.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "2" },
+    "hint": "Putar bit ke kiri memori melalui Carry (rotate carry left)"
+  },
+  {
+    "mnemonic": "rcr.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "3", "imm": "imm8" },
+    "hint": "Putar bit ke kanan melalui Carry (rotate carry right)"
+  },
+  {
+    "mnemonic": "rcr.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0xC1", "modrm": "3", "imm": "imm8" },
+    "hint": "Putar bit ke kanan memori melalui Carry (rotate carry right)"
+  },
+  {
+    "mnemonic": "rcr.r64.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "3" },
+    "hint": "Putar bit ke kanan melalui Carry (rotate carry right)"
+  },
+  {
+    "mnemonic": "rcr.mem.cl",
+    "encoding": { "rex": "W", "opcode": "0xD3", "modrm": "3" },
+    "hint": "Putar bit ke kanan memori melalui Carry (rotate carry right)"
+  },
+  {
+    "mnemonic": "bsf.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBC", "modrm": "reg,reg" },
+    "hint": "Cari bit set pertama dari LSB (Bit Scan Forward)"
+  },
+  {
+    "mnemonic": "bsr.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBD", "modrm": "reg,reg" },
+    "hint": "Cari bit set pertama dari MSB (Bit Scan Reverse)"
+  },
+  {
+    "mnemonic": "popcnt.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0xF3,0x0F,0xB8", "modrm": "reg,reg" },
+    "hint": "Hitung jumlah bit set (Population Count)"
+  },
+  {
+    "mnemonic": "bt.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBA", "modrm": "4", "imm": "imm8" },
+    "hint": "Uji bit tertentu (Bit Test)"
+  },
+  {
+    "mnemonic": "bt.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBA", "modrm": "4", "imm": "imm8" },
+    "hint": "Uji bit tertentu memori (Bit Test)"
+  },
+  {
+    "mnemonic": "bt.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xA3", "modrm": "mem,reg" },
+    "hint": "Uji bit tertentu dengan register"
+  },
+  {
+    "mnemonic": "bt.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xA3", "modrm": "mem,reg" },
+    "hint": "Uji bit tertentu memori dengan register"
+  },
+  {
+    "mnemonic": "bts.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBA", "modrm": "5", "imm": "imm8" },
+    "hint": "Uji dan Set bit (Bit Test & Set)"
+  },
+  {
+    "mnemonic": "bts.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBA", "modrm": "5", "imm": "imm8" },
+    "hint": "Uji dan Set bit memori (Bit Test & Set)"
+  },
+  {
+    "mnemonic": "bts.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xAB", "modrm": "mem,reg" },
+    "hint": "Uji dan Set bit dengan register"
+  },
+  {
+    "mnemonic": "bts.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xAB", "modrm": "mem,reg" },
+    "hint": "Uji dan Set bit memori dengan register"
+  },
+  {
+    "mnemonic": "btr.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBA", "modrm": "6", "imm": "imm8" },
+    "hint": "Uji dan Reset bit (Bit Test & Reset)"
+  },
+  {
+    "mnemonic": "btr.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBA", "modrm": "6", "imm": "imm8" },
+    "hint": "Uji dan Reset bit memori (Bit Test & Reset)"
+  },
+  {
+    "mnemonic": "btr.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xB3", "modrm": "mem,reg" },
+    "hint": "Uji dan Reset bit dengan register"
+  },
+  {
+    "mnemonic": "btr.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xB3", "modrm": "mem,reg" },
+    "hint": "Uji dan Reset bit memori dengan register"
+  },
+  {
+    "mnemonic": "btc.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBA", "modrm": "7", "imm": "imm8" },
+    "hint": "Uji dan Komplement bit (Bit Test & Complement)"
+  },
+  {
+    "mnemonic": "btc.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBA", "modrm": "7", "imm": "imm8" },
+    "hint": "Uji dan Komplement bit memori (Bit Test & Complement)"
+  },
+  {
+    "mnemonic": "btc.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBB", "modrm": "mem,reg" },
+    "hint": "Uji dan Komplement bit dengan register"
+  },
+  {
+    "mnemonic": "btc.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xBB", "modrm": "mem,reg" },
+    "hint": "Uji dan Komplement bit memori dengan register"
+  },
+  {
+    "mnemonic": "cmpxchg.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xB1", "modrm": "mem,reg" },
+    "hint": "Compare and Exchange (Atomic), jika RAX == dst, dst = src"
+  },
+  {
+    "mnemonic": "crc32.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0xF2,0x0F,0x38,0xF1", "modrm": "reg,reg" },
+    "hint": "Akumulasi CRC32 value (Hashing Hardware)"
+  },
+  {
+    "mnemonic": "xlat",
+    "encoding": { "opcode": "0xD7" },
+    "hint": "Table Look-up Translation (AL = [RBX + AL])"
+  }
+]

@@ -1,0 +1,137 @@
+[
+  {
+    "mnemonic": "cld",
+    "encoding": { "opcode": "0xFC" },
+    "hint": "Clear Direction Flag (Increment/Maju)"
+  },
+  {
+    "mnemonic": "std",
+    "encoding": { "opcode": "0xFD" },
+    "hint": "Set Direction Flag (Decrement/Mundur)"
+  },
+  {
+    "mnemonic": "rep",
+    "encoding": { "opcode": "0xF3" },
+    "hint": "Ulangi selama RCX > 0"
+  },
+  {
+    "mnemonic": "repe",
+    "encoding": { "opcode": "0xF3" },
+    "hint": "Ulangi selama RCX > 0 DAN Sama (Equal)"
+  },
+  {
+    "mnemonic": "repz",
+    "encoding": { "opcode": "0xF3" },
+    "hint": "Alias repe"
+  },
+  {
+    "mnemonic": "repne",
+    "encoding": { "opcode": "0xF2" },
+    "hint": "Ulangi selama RCX > 0 DAN Tidak Sama (Not Equal)"
+  },
+  {
+    "mnemonic": "repnz",
+    "encoding": { "opcode": "0xF2" },
+    "hint": "Alias repne"
+  },
+  {
+    "mnemonic": "movsb",
+    "encoding": { "opcode": "0xA4" },
+    "hint": "Salin byte dari [RSI] ke [RDI]"
+  },
+  {
+    "mnemonic": "movsw",
+    "encoding": { "opcode": "0x66,0xA5" },
+    "hint": "Salin word (2 byte)"
+  },
+  {
+    "mnemonic": "movsd",
+    "encoding": { "opcode": "0xA5" },
+    "hint": "Salin dword (4 byte)"
+  },
+  {
+    "mnemonic": "movsq",
+    "encoding": { "rex": "W", "opcode": "0xA5" },
+    "hint": "Salin qword (8 byte) dari [RSI] ke [RDI]"
+  },
+  {
+    "mnemonic": "stosb",
+    "encoding": { "opcode": "0xAA" },
+    "hint": "Simpan AL ke [RDI]"
+  },
+  {
+    "mnemonic": "stosw",
+    "encoding": { "opcode": "0x66,0xAB" },
+    "hint": "Simpan AX ke [RDI]"
+  },
+  {
+    "mnemonic": "stosd",
+    "encoding": { "opcode": "0xAB" },
+    "hint": "Simpan EAX ke [RDI]"
+  },
+  {
+    "mnemonic": "stosq",
+    "encoding": { "rex": "W", "opcode": "0xAB" },
+    "hint": "Simpan RAX ke [RDI]"
+  },
+  {
+    "mnemonic": "lodsb",
+    "encoding": { "opcode": "0xAC" },
+    "hint": "Muat byte dari [RSI] ke AL"
+  },
+  {
+    "mnemonic": "lodsw",
+    "encoding": { "opcode": "0x66,0xAD" },
+    "hint": "Muat word dari [RSI] ke AX"
+  },
+  {
+    "mnemonic": "lodsd",
+    "encoding": { "opcode": "0xAD" },
+    "hint": "Muat dword dari [RSI] ke EAX"
+  },
+  {
+    "mnemonic": "lodsq",
+    "encoding": { "rex": "W", "opcode": "0xAD" },
+    "hint": "Muat qword dari [RSI] ke RAX"
+  },
+  {
+    "mnemonic": "cmpsb",
+    "encoding": { "opcode": "0xA6" },
+    "hint": "Bandingkan byte [RSI] dengan [RDI]"
+  },
+  {
+    "mnemonic": "cmpsw",
+    "encoding": { "opcode": "0x66,0xA7" },
+    "hint": "Bandingkan word"
+  },
+  {
+    "mnemonic": "cmpsd",
+    "encoding": { "opcode": "0xA7" },
+    "hint": "Bandingkan dword"
+  },
+  {
+    "mnemonic": "cmpsq",
+    "encoding": { "rex": "W", "opcode": "0xA7" },
+    "hint": "Bandingkan qword [RSI] dengan [RDI]"
+  },
+  {
+    "mnemonic": "scasb",
+    "encoding": { "opcode": "0xAE" },
+    "hint": "Bandingkan AL dengan [RDI]"
+  },
+  {
+    "mnemonic": "scasw",
+    "encoding": { "opcode": "0x66,0xAF" },
+    "hint": "Bandingkan AX dengan [RDI]"
+  },
+  {
+    "mnemonic": "scasd",
+    "encoding": { "opcode": "0xAF" },
+    "hint": "Bandingkan EAX dengan [RDI]"
+  },
+  {
+    "mnemonic": "scasq",
+    "encoding": { "rex": "W", "opcode": "0xAF" },
+    "hint": "Bandingkan RAX dengan [RDI]"
+  }
+]
