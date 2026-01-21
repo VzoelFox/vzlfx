@@ -1,0 +1,362 @@
+[
+  {
+    "mnemonic": "add.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x01", "modrm": "reg,reg" },
+    "hint": "Tambah register dengan register (+)"
+  },
+  {
+    "mnemonic": "add.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x03", "modrm": "reg,mem" },
+    "hint": "Tambah register dengan memori (+)"
+  },
+  {
+    "mnemonic": "add.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x01", "modrm": "mem,reg" },
+    "hint": "Tambah memori dengan register (+)"
+  },
+  {
+    "mnemonic": "add.r64.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "0", "imm": "imm32" },
+    "hint": "Tambah register dengan angka 32-bit (+)"
+  },
+  {
+    "mnemonic": "add.mem.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "0", "imm": "imm32" },
+    "hint": "Tambah memori dengan angka 32-bit (+)"
+  },
+  {
+    "mnemonic": "add.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "0", "imm": "imm8" },
+    "hint": "Tambah register dengan angka 8-bit (+)"
+  },
+  {
+    "mnemonic": "add.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "0", "imm": "imm8" },
+    "hint": "Tambah memori dengan angka 8-bit (+)"
+  },
+  {
+    "mnemonic": "adc.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x11", "modrm": "reg,reg" },
+    "hint": "Tambah dengan Carry (+ + C)"
+  },
+  {
+    "mnemonic": "adc.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x13", "modrm": "reg,mem" },
+    "hint": "Tambah dengan Carry register dengan memori"
+  },
+  {
+    "mnemonic": "adc.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x11", "modrm": "mem,reg" },
+    "hint": "Tambah dengan Carry memori dengan register"
+  },
+  {
+    "mnemonic": "adc.r64.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "2", "imm": "imm32" },
+    "hint": "Tambah dengan Carry immediate 32-bit"
+  },
+  {
+    "mnemonic": "adc.mem.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "2", "imm": "imm32" },
+    "hint": "Tambah dengan Carry memori immediate 32-bit"
+  },
+  {
+    "mnemonic": "adc.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "2", "imm": "imm8" },
+    "hint": "Tambah dengan Carry immediate 8-bit"
+  },
+  {
+    "mnemonic": "adc.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "2", "imm": "imm8" },
+    "hint": "Tambah dengan Carry memori immediate 8-bit"
+  },
+  {
+    "mnemonic": "sub.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x29", "modrm": "reg,reg" },
+    "hint": "Kurang register dengan register (-)"
+  },
+  {
+    "mnemonic": "sub.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x2B", "modrm": "reg,mem" },
+    "hint": "Kurang register dengan memori (-)"
+  },
+  {
+    "mnemonic": "sub.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x29", "modrm": "mem,reg" },
+    "hint": "Kurang memori dengan register (-)"
+  },
+  {
+    "mnemonic": "sub.r64.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "5", "imm": "imm32" },
+    "hint": "Kurang register dengan angka 32-bit (-)"
+  },
+  {
+    "mnemonic": "sub.mem.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "5", "imm": "imm32" },
+    "hint": "Kurang memori dengan angka 32-bit (-)"
+  },
+  {
+    "mnemonic": "sub.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "5", "imm": "imm8" },
+    "hint": "Kurang register dengan angka 8-bit (-)"
+  },
+  {
+    "mnemonic": "sub.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "5", "imm": "imm8" },
+    "hint": "Kurang memori dengan angka 8-bit (-)"
+  },
+  {
+    "mnemonic": "sbb.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x19", "modrm": "reg,reg" },
+    "hint": "Kurang dengan Borrow (- - C)"
+  },
+  {
+    "mnemonic": "sbb.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x1B", "modrm": "reg,mem" },
+    "hint": "Kurang dengan Borrow register dengan memori"
+  },
+  {
+    "mnemonic": "sbb.mem.r64",
+    "encoding": { "rex": "W", "opcode": "0x19", "modrm": "mem,reg" },
+    "hint": "Kurang dengan Borrow memori dengan register"
+  },
+  {
+    "mnemonic": "sbb.r64.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "3", "imm": "imm32" },
+    "hint": "Kurang dengan Borrow immediate 32-bit"
+  },
+  {
+    "mnemonic": "sbb.mem.imm32",
+    "encoding": { "rex": "W", "opcode": "0x81", "modrm": "3", "imm": "imm32" },
+    "hint": "Kurang dengan Borrow memori immediate 32-bit"
+  },
+  {
+    "mnemonic": "sbb.r64.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "3", "imm": "imm8" },
+    "hint": "Kurang dengan Borrow immediate 8-bit"
+  },
+  {
+    "mnemonic": "sbb.mem.imm8",
+    "encoding": { "rex": "W", "opcode": "0x83", "modrm": "3", "imm": "imm8" },
+    "hint": "Kurang dengan Borrow memori immediate 8-bit"
+  },
+  {
+    "mnemonic": "imul.r64.r64",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xAF", "modrm": "reg,reg" },
+    "hint": "Kali (signed) register dengan register (*)"
+  },
+  {
+    "mnemonic": "imul.r64.mem",
+    "encoding": { "rex": "W", "opcode": "0x0F,0xAF", "modrm": "reg,mem" },
+    "hint": "Kali (signed) register dengan memori (*)"
+  },
+  {
+    "mnemonic": "imul.r64.imm32",
+    "encoding": { "rex": "W", "opcode": "0x69", "modrm": "reg,reg", "imm": "imm32" },
+    "hint": "Kali (signed) register dengan immediate 32-bit (*)"
+  },
+  {
+    "mnemonic": "mul.r64",
+    "encoding": { "rex": "W", "opcode": "0xF7", "modrm": "4" },
+    "hint": "Kali (unsigned) RAX dengan register (RAX * r64 -> RDX:RAX)"
+  },
+  {
+    "mnemonic": "idiv.r64",
+    "encoding": { "rex": "W", "opcode": "0xF7", "modrm": "7" },
+    "hint": "Bagi (signed) RDX:RAX dengan register (/ %)"
+  },
+  {
+    "mnemonic": "div.r64",
+    "encoding": { "rex": "W", "opcode": "0xF7", "modrm": "6" },
+    "hint": "Bagi (unsigned) RDX:RAX dengan register (/ %)"
+  },
+  {
+    "mnemonic": "cqo",
+    "encoding": { "rex": "W", "opcode": "0x99" },
+    "hint": "Sign Extend RAX ke RDX:RAX (persiapan idiv)"
+  },
+  {
+    "mnemonic": "inc.r64",
+    "encoding": { "rex": "W", "opcode": "0xFF", "modrm": "0" },
+    "hint": "Tambah 1 ke register (++)"
+  },
+  {
+    "mnemonic": "inc.mem64",
+    "encoding": { "rex": "W", "opcode": "0xFF", "modrm": "0" },
+    "hint": "Tambah 1 ke memori (++)"
+  },
+  {
+    "mnemonic": "dec.r64",
+    "encoding": { "rex": "W", "opcode": "0xFF", "modrm": "1" },
+    "hint": "Kurang 1 dari register (--)"
+  },
+  {
+    "mnemonic": "dec.mem64",
+    "encoding": { "rex": "W", "opcode": "0xFF", "modrm": "1" },
+    "hint": "Kurang 1 dari memori (--)"
+  },
+  {
+    "mnemonic": "neg.r64",
+    "encoding": { "rex": "W", "opcode": "0xF7", "modrm": "3" },
+    "hint": "Negasikan nilai register ( -x )"
+  },
+  {
+    "mnemonic": "neg.mem64",
+    "encoding": { "rex": "W", "opcode": "0xF7", "modrm": "3" },
+    "hint": "Negasikan nilai memori ( -x )"
+  },
+  {
+    "mnemonic": "finit",
+    "encoding": { "opcode": "0x9B,0xDB,0xE3" },
+    "hint": "Inisialisasi FPU"
+  },
+  {
+    "mnemonic": "fld.mem64",
+    "encoding": { "opcode": "0xDD", "modrm": "0" },
+    "hint": "Load double (64-bit float) dari memori ke st(0)"
+  },
+  {
+    "mnemonic": "fld.st0",
+    "encoding": { "opcode": "0xD9,0xC0" },
+    "hint": "Duplicate st(0)"
+  },
+  {
+    "mnemonic": "fstp.mem64",
+    "encoding": { "opcode": "0xDD", "modrm": "3" },
+    "hint": "Store double ke memori dan pop st(0)"
+  },
+  {
+    "mnemonic": "fld1",
+    "encoding": { "opcode": "0xD9,0xE8" },
+    "hint": "Load konstanta 1.0 ke st(0)"
+  },
+  {
+    "mnemonic": "fldz",
+    "encoding": { "opcode": "0xD9,0xEE" },
+    "hint": "Load konstanta 0.0 ke st(0)"
+  },
+  {
+    "mnemonic": "fldpi",
+    "encoding": { "opcode": "0xD9,0xEB" },
+    "hint": "Load konstanta PI ke st(0)"
+  },
+  {
+    "mnemonic": "fadd.mem64",
+    "encoding": { "opcode": "0xDC", "modrm": "0" },
+    "hint": "Tambah st(0) dengan memori"
+  },
+  {
+    "mnemonic": "fsub.mem64",
+    "encoding": { "opcode": "0xDC", "modrm": "4" },
+    "hint": "Kurang st(0) dengan memori"
+  },
+  {
+    "mnemonic": "fmul.mem64",
+    "encoding": { "opcode": "0xDC", "modrm": "1" },
+    "hint": "Kali st(0) dengan memori"
+  },
+  {
+    "mnemonic": "fdiv.mem64",
+    "encoding": { "opcode": "0xDC", "modrm": "6" },
+    "hint": "Bagi st(0) dengan memori"
+  },
+  {
+    "mnemonic": "faddp",
+    "encoding": { "opcode": "0xDE,0xC1" },
+    "hint": "Tambah st(1) = st(1) + st(0), pop"
+  },
+  {
+    "mnemonic": "fsubp",
+    "encoding": { "opcode": "0xDE,0xE9" },
+    "hint": "Kurang st(1) = st(1) - st(0), pop"
+  },
+  {
+    "mnemonic": "fmulp",
+    "encoding": { "opcode": "0xDE,0xC9" },
+    "hint": "Kali st(1) = st(1) * st(0), pop"
+  },
+  {
+    "mnemonic": "fdivp",
+    "encoding": { "opcode": "0xDE,0xF9" },
+    "hint": "Bagi st(1) = st(1) / st(0), pop"
+  },
+  {
+    "mnemonic": "fsin",
+    "encoding": { "opcode": "0xD9,0xFE" },
+    "hint": "Hitung Sinus dari st(0) -> st(0)"
+  },
+  {
+    "mnemonic": "fcos",
+    "encoding": { "opcode": "0xD9,0xFF" },
+    "hint": "Hitung Cosinus dari st(0) -> st(0)"
+  },
+  {
+    "mnemonic": "fptan",
+    "encoding": { "opcode": "0xD9,0xF2" },
+    "hint": "Hitung Tangent dari st(0) -> st(1):st(0) (1.0 : tan)"
+  },
+  {
+    "mnemonic": "fsqrt",
+    "encoding": { "opcode": "0xD9,0xFA" },
+    "hint": "Hitung Akar Kuadrat dari st(0)"
+  },
+  {
+    "mnemonic": "movss.xmm.mem",
+    "encoding": { "opcode": "0xF3,0x0F,0x10", "modrm": "reg,mem" },
+    "hint": "Load float 32-bit dari mem ke XMM"
+  },
+  {
+    "mnemonic": "movss.mem.xmm",
+    "encoding": { "opcode": "0xF3,0x0F,0x11", "modrm": "mem,reg" },
+    "hint": "Store float 32-bit dari XMM ke mem"
+  },
+  {
+    "mnemonic": "movss.xmm.xmm",
+    "encoding": { "opcode": "0xF3,0x0F,0x10", "modrm": "dst_reg,src_reg" },
+    "hint": "Move float 32-bit antar XMM"
+  },
+  {
+    "mnemonic": "addss.xmm.xmm",
+    "encoding": { "opcode": "0xF3,0x0F,0x58", "modrm": "dst_reg,src_reg" },
+    "hint": "Add float (xmm1 += xmm2)"
+  },
+  {
+    "mnemonic": "addss.xmm.mem",
+    "encoding": { "opcode": "0xF3,0x0F,0x58", "modrm": "reg,mem" },
+    "hint": "Add float mem to xmm"
+  },
+  {
+    "mnemonic": "subss.xmm.xmm",
+    "encoding": { "opcode": "0xF3,0x0F,0x5C", "modrm": "dst_reg,src_reg" },
+    "hint": "Sub float"
+  },
+  {
+    "mnemonic": "mulss.xmm.xmm",
+    "encoding": { "opcode": "0xF3,0x0F,0x59", "modrm": "dst_reg,src_reg" },
+    "hint": "Mul float"
+  },
+  {
+    "mnemonic": "divss.xmm.xmm",
+    "encoding": { "opcode": "0xF3,0x0F,0x5E", "modrm": "dst_reg,src_reg" },
+    "hint": "Div float"
+  },
+  {
+    "mnemonic": "ucomiss.xmm.xmm",
+    "encoding": { "opcode": "0x0F,0x2E", "modrm": "dst_reg,src_reg" },
+    "hint": "Compare float unordered"
+  },
+  {
+    "mnemonic": "cvtsi2ss.xmm.r64",
+    "encoding": { "rex": "W", "opcode": "0xF3,0x0F,0x2A", "modrm": "dst_reg,src_reg" },
+    "hint": "Convert Int64 to Float32"
+  },
+  {
+    "mnemonic": "cvtss2si.r64.xmm",
+    "encoding": { "rex": "W", "opcode": "0xF3,0x0F,0x2D", "modrm": "dst_reg,src_reg" },
+    "hint": "Convert Float32 to Int64 (Round)"
+  },
+  {
+    "mnemonic": "cvttss2si.r64.xmm",
+    "encoding": { "rex": "W", "opcode": "0xF3,0x0F,0x2C", "modrm": "dst_reg,src_reg" },
+    "hint": "Convert Float32 to Int64 (Truncate)"
+  }
+]
