@@ -1,0 +1,84 @@
+; Morph Seer Linter (Error Reporting & Hinting)
+; [AI_HINT: Menampilkan pesan error dengan konteks visual (warna, panah)]
+
+fungsi seer.linter.print_error
+    ; Input:
+    ;   rdi = Code ID (pointer string, misal "E001")
+    ;   rsi = Filename (pointer string)
+    ;   rdx = Line Number (integer)
+    ;   rcx = Column Number (integer)
+    ;   r8  = Snippet Line (pointer string)
+
+    push rbp
+    mov rbp, rsp
+
+    ; Simpan argumen yang akan ketimpa
+    push rdi    ; Code ID
+    push rsi    ; Filename
+    push r8     ; Snippet
+
+    ; 1. Header Error (Merah)
+    mov rdi, ANSI_RED
+    call seer.print.text
+
+    ; [NOTE: Compiler harus ubah "String" jadi pointer ke .data section]
+    mov rdi, "ERROR ["
+    call seer.print.text
+
+    ; Restore Code ID sementara ke RDI
+    mov rdi, [rbp-8]
+    call seer.print.text
+
+    mov rdi, "]: "
+    call seer.print.text
+
+    ; (Disini harusnya lookup msg dari JSON, tapi untuk sekarang kita print ID dulu)
+
+    mov rdi, ANSI_RESET
+    call seer.print.text
+    call seer.print.nl
+
+    ; 2. Lokasi File
+    mov rdi, "  --> "
+    call seer.print.text
+
+    mov rdi, [rbp-16] ; Filename
+    call seer.print.text
+
+    mov rdi, ":"
+    call seer.print.text
+
+    ; TODO: Print Integer (rdx, rcx) -> butuh seer.print.int
+    call seer.print.nl
+
+    ; 3. Snippet Code
+    mov rdi, "   | "
+    call seer.print.text
+    call seer.print.nl
+
+    mov rdi, "   | "
+    call seer.print.text
+
+    mov rdi, [rbp-24]  ; Snippet
+    call seer.print.text
+    call seer.print.nl
+
+    ; 4. Pointer Panah (Kuning)
+    mov rdi, "   | "
+    call seer.print.text
+
+    mov rdi, ANSI_YELLOW
+    call seer.print.text
+
+    ; Placeholder loop spasi
+
+    mov rdi, "^ Di sini"
+    call seer.print.text
+
+    mov rdi, ANSI_RESET
+    call seer.print.text
+    call seer.print.nl
+
+    leave
+    ret
+tutup_fungsi
