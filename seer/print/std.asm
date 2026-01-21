@@ -1,10 +1,7 @@
 ; Morph Seer Print (Standard Output)
 ; [AI_HINT: Wrapper jujur untuk output standar tanpa magic formatting]
-; Dependency: Brainlib/kernel.vzoel, Brainlib/memori.vzoel
 
-; --- String Output ---
-
-seer.print.raw      kind=macro action={
+seer.print.raw:
     ; [AI_HINT: Cetak buffer raw (bytes) ke stdout]
     ; Input: rdi (buffer), rsi (len)
 
@@ -15,18 +12,14 @@ seer.print.raw      kind=macro action={
     mov rsi, rdi    ; Buffer ke RSI
     mov rdi, 1      ; STDOUT ke RDI
 
-    ; Panggil syscall write langsung dari kernel
-    ; Kita gunakan definisi macro sys.fs.write tapi karena ini macro dalam macro,
-    ; kita tulis manual instruksinya untuk transparansi penuh.
     mov rax, 1      ; sys_write
     syscall
 
     pop rax
     pop rdx
-}
+    ret
 
-; Implementasi ulang puts dengan flow yang lebih bersih
-seer.print.text     kind=macro action={
+seer.print.text:
     ; [AI_HINT: Cetak string null-terminated sederhana]
     ; Input: rdi (pointer string)
 
@@ -60,11 +53,9 @@ seer.print.text     kind=macro action={
     pop rcx
     pop rsi
     pop rdi
-}
+    ret
 
-; --- New Line ---
-
-seer.print.nl       kind=macro action={
+seer.print.nl:
     ; [AI_HINT: Cetak baris baru (\n)]
     push rdi
     push rsi
@@ -85,11 +76,9 @@ seer.print.nl       kind=macro action={
     pop rdx
     pop rsi
     pop rdi
-}
+    ret
 
-; --- Integer Output (Decimal) ---
-
-seer.print.int      kind=macro action={
+seer.print.int:
     ; [AI_HINT: Cetak integer 64-bit (signed) ke stdout]
     ; Input: rdi (integer value)
 
@@ -116,15 +105,13 @@ seer.print.int      kind=macro action={
     cmp rax, 0
     jge .process_digit
     neg rax         ; Jadikan positif
-    ; (Kita ingat negatif nanti, atau cetak '-' dulu? Cetak '-' langsung aja simple)
+
+    ; Cetak '-' manual
     push rax
     push rdi
     push rsi
     push rdx
 
-    mov rdi, "-"    ; TODO: Ini harus pointer ke string "-", anggap compiler handle literal
-    ; call seer.print.text ; (Jangan panggil macro dalam macro dulu jika belum stabil, manual write aja)
-    ; Manual write '-' char
     push 0x2D       ; '-'
     mov rsi, rsp
     mov rdx, 1
@@ -165,11 +152,9 @@ seer.print.int      kind=macro action={
     pop rdx
     pop rsi
     pop rdi
-}
+    ret
 
-; --- Hex Output ---
-
-seer.print.hex      kind=macro action={
+seer.print.hex:
     ; [AI_HINT: Cetak integer 64-bit dalam format Hex (0x...)]
     ; Input: rdi (integer value)
 
@@ -182,8 +167,7 @@ seer.print.hex      kind=macro action={
     mov rbp, rsp
 
     ; Cetak "0x" prefix
-    push 0x7830     ; "0x" (Little Endian: '0' low, 'x' high? No, '0'=0x30, 'x'=0x78)
-                    ; Memory: 0x30, 0x78. Reg: 0x7830.
+    push 0x7830     ; "0x"
     mov rsi, rsp
     mov rdx, 2
     mov rdi, 1
@@ -196,21 +180,7 @@ seer.print.hex      kind=macro action={
     mov rsi, rsp    ; Pointer buffer
     add rsi, 16     ; Mulai dari ujung
 
-    mov rax, [rbp+40] ; Ambil RDI asli (dari push rdi paling atas... wait offsetnya 40?
-                      ; push: rdi(8), rsi(8), rdx(8), rcx(8), rax(8), rbp(8) -> total 48.
-                      ; [rbp] = saved rbp. [rbp+8] = ret addr (jika call).
-                      ; Tapi ini macro, jadi inline. Stack lurus.
-                      ; rdi ada di [rbp+40] (8*5 = 40).
-                      ; TUNGGU: rdi ada di stack paling bawah sebelum rbp.
-                      ; Urutan push: rdi, rsi, rdx, rcx, rax, rbp.
-                      ; rbp -> saved rbp
-                      ; rbp+8 -> saved rax
-                      ; rbp+16 -> saved rcx
-                      ; rbp+24 -> saved rdx
-                      ; rbp+32 -> saved rsi
-                      ; rbp+40 -> saved rdi. Correct.
-
-    mov rax, [rbp+40]
+    mov rax, [rbp+40] ; Ambil RDI asli
     mov rcx, 16     ; 16 digit hex
 
     .hex_loop:
@@ -246,4 +216,4 @@ seer.print.hex      kind=macro action={
     pop rdx
     pop rsi
     pop rdi
-}
+    ret

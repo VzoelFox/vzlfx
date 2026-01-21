@@ -1,7 +1,7 @@
 ; Morph Seer String Comparison
 ; [AI_HINT: Primitif perbandingan string manual byte-per-byte]
 
-seer.string.equals  kind=macro action={
+seer.string.equals:
     ; [AI_HINT: Bandingkan dua string null-terminated]
     ; Input: rdi (str1), rsi (str2)
     ; Output: rax (1 jika sama, 0 jika beda)
@@ -37,9 +37,9 @@ seer.string.equals  kind=macro action={
     pop rbx
     pop rsi
     pop rdi
-}
+    ret
 
-seer.string.equals_len kind=macro action={
+seer.string.equals_len:
     ; [AI_HINT: Bandingkan string dengan panjang tertentu]
     ; Input: rdi (str1), rsi (str2), rdx (len)
     ; Output: rax (1 jika sama, 0 jika beda)
@@ -79,4 +79,4 @@ seer.string.equals_len kind=macro action={
     pop rbx
     pop rsi
     pop rdi
-}
+    ret
