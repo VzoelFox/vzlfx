@@ -1,48 +1,40 @@
 # Diskusi Pengembangan Bahasa Native AI
 
-Halo! Sesuai instruksi, saya telah mengambil `Brainlib` dari repositori `morphx84_64` dan menganalisis isinya. Berikut adalah temuan dan bahan diskusi saya.
+Halo! Sesuai instruksi, saya telah mengambil `Brainlib` dari repositori `morphx84_64` dan memperluasnya dengan definisi instruksi kernel.
 
-## Temuan di Brainlib
+## Update Fase 2: Kernel & Network Mapping
 
-Saya menemukan 7 file `.vzoel` di dalam direktori `Brainlib`:
-1.  **aritmatika.vzoel**: Operasi matematika dasar dan floating point (FPU/SSE).
-2.  **data.vzoel**: Perpindahan data (mov, stack, extension).
-3.  **io.vzoel**: Interaksi sistem (syscall).
-4.  **kontrol.vzoel**: Kontrol alur (jump, loop, compare) dan definisi struktur tingkat tinggi (jika, selama).
-5.  **logika.vzoel**: Operasi bitwise (and, or, shift).
-6.  **memori.vzoel**: Operasi string/blok memori.
-7.  **rutin.vzoel**: Manajemen stack frame dan sinkronisasi.
+Saya telah menambahkan modul baru `Brainlib/kernel.vzoel` dan memperbarui `Brainlib/io.vzoel`.
 
-### Analisis Struktur
+### 1. Konsep Macro Instruction (`kernel.vzoel`)
+Berbeda dengan instruksi aritmatika yang memetakan langsung ke opcode mesin (1-to-1), instruksi kernel (seperti Network) membutuhkan urutan instruksi (sekuensial). Oleh karena itu, saya memperkenalkan format `kind=macro`:
 
-Format file `.vzoel` terlihat seperti definisi *Instruction Set Architecture* (ISA) yang memetakan **Mnemonic Kustom** ke **Opcode x86-64**.
-
-Contoh:
 ```asm
-add.r64.r64         rex=W opcode=0x01 modrm=reg,reg ; [AI_HINT: Tambah register dengan register (+)]
+sys.net.socket      kind=macro action={mov rax, 41; syscall}  ; [AI_HINT: Syscall SOCKET...]
 ```
 
--   **Mnemonic**: `add.r64.r64` (sangat eksplisit dengan tipe operand).
--   **Encoding**: `rex=W opcode=0x01 modrm=reg,reg` (detail teknis x86-64).
--   **AI Hint**: `[AI_HINT: ...]` (bagian paling menarik).
+**Kenapa ini penting?**
+-   **Native Understanding**: AI tidak perlu menghapal "angka ajaib" (41 = socket). AI cukup menggunakan `sys.net.socket` dan secara semantik paham itu adalah operasi pembuatan socket.
+-   **Transparansi**: Di level assembly, instruksi ini tetap akan diterjemahkan menjadi kode native yang efisien (`mov` + `syscall`), tanpa overhead *runtime library* yang berat.
 
-### Konsep "Native AI"
+### 2. Cakupan Instruksi Kernel
+Saya telah memetakan instruksi dasar untuk:
+-   **File System**: `read`, `write`, `open`, `close`, `lseek`, dll.
+-   **Network**: `socket`, `connect`, `bind`, `listen`, `accept`, `sendto`, `recvfrom`.
+-   **Memory**: `mmap`, `brk` (dasar alokasi memori).
+-   **Time**: `nanosleep`.
 
-Penggunaan tag `[AI_HINT]` sangat unik. Ini menyarankan bahwa bahasa ini didesain agar **dapat dipahami secara semantik oleh AI**.
+Sesuai arahan, manajemen proses (`fork`, `exec`) **di-skip** dulu.
 
-Biasanya, AI kesulitan memahami assembly karena konteksnya hilang (hanya instruksi mesin). Dengan `[AI_HINT]`, kita memberikan "meta-data" yang menjelaskan *tujuan* instruksi tersebut (misal: "Tambah register dengan register (+)").
+### 3. Hardware I/O (`io.vzoel`)
+Saya juga menambahkan instruksi `in` dan `out` (Port I/O) di `io.vzoel`. Meskipun jarang digunakan di aplikasi level user (Ring 3), ini vital jika tujuan akhirnya adalah "Native AI" yang mungkin berjalan di level kernel atau bare-metal.
 
-Ini bisa memungkinkan:
-1.  **AI Code Generation yang Lebih Akurat**: AI bisa memilih instruksi berdasarkan deskripsi semantiknya.
-2.  **Self-Optimizing Compiler**: AI bisa memahami alur program dari level terendah.
-3.  **Dokumentasi Otomatis**: Kode assembly bisa diterjemahkan kembali ke bahasa manusia dengan mudah.
+## Rencana Selanjutnya
 
-## Pertanyaan Diskusi
+Dengan fondasi `Brainlib` yang kini mencakup komputasi (aritmatika/logika) dan interaksi sistem (kernel), kita memiliki basis yang kuat.
 
-Untuk langkah selanjutnya, saya ingin menanyakan arah pengembangan yang Anda inginkan:
-
-1.  **Assembler/Compiler**: Apakah kita akan membuat *tool* (misal dengan Python atau C) yang bisa membaca file `.vzoel` ini dan mengubah kode sumber (misal `.fox`) menjadi binary executable?
-2.  **Ekspansi Brainlib**: Apakah kita perlu menambahkan instruksi lain atau memperbaiki definisi yang ada?
-3.  **Eksperimen AI**: Apakah Anda ingin saya mencoba men-generate kode sederhana menggunakan definisi ini untuk melihat apakah konsep "Native AI" ini efektif?
+Pertanyaan untuk langkah berikutnya:
+1.  **Struktur Data Native**: Bagaimana kita ingin mendefinisikan struktur data kompleks (seperti `sockaddr` untuk network) dalam format `.vzoel`? Apakah AI perlu tahu layout memori struct tersebut secara eksplisit?
+2.  **Compiler Prototype**: Apakah sudah saatnya kita mencoba membuat parser sederhana untuk memvalidasi file `.vzoel` ini?
 
 Saya siap menunggu arahan Anda selanjutnya!
