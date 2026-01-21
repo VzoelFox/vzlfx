@@ -97,7 +97,25 @@ main:
     call seer.print.int
     call seer.print.nl
 
-    ; --- 3. Simple Tokenizer (Scanner) ---
+    ; --- 3. Verify Magic Number (VZOELFOX) ---
+    ; Header: [0-7] = "VZOELFOX"
+    ; Cek panjang file minimal 8
+    cmp r14, 8
+    jl .err_format
+
+    mov rsi, r13        ; Buffer Ptr
+    mov rdi, magic_sig  ; "VZOELFOX"
+    mov rdx, 8
+    call seer.string.equals_len
+
+    cmp rax, 1
+    jne .err_magic
+
+    ; Magic Valid - Skip Header
+    add r13, 8
+    sub r14, 8
+
+    ; --- 4. Simple Tokenizer (Scanner) ---
     ; Scan buffer r13, panjang r14
     ; Pisahkan berdasarkan spasi/newline
 
@@ -187,6 +205,18 @@ main:
         call seer.print.nl
         jmp .exit_err
 
+    .err_format:
+        mov rdi, msg_err_format
+        call seer.print.text
+        call seer.print.nl
+        jmp .exit_err
+
+    .err_magic:
+        mov rdi, msg_err_magic
+        call seer.print.text
+        call seer.print.nl
+        jmp .exit_err
+
     .exit_err:
         mov rdi, 1
         mov rax, 60
@@ -208,3 +238,6 @@ include '../Brainlib/brainlib.inc'
     msg_done        db "Loader finished.", 0
     msg_err_open    db "Error: Cannot open file", 0
     msg_err_mem     db "Error: Memory allocation failed", 0
+    msg_err_format  db "Error: File too short", 0
+    msg_err_magic   db "Error: Invalid Magic Number. Expected VZOELFOX", 0
+    magic_sig       db "VZOELFOX", 0
