@@ -253,36 +253,17 @@ main:
     ret
 
 .compile_output:
-    ; Debug: print compile mode message
-    push rbx
-    mov rdi, msg_compiling
-    call seer.print.text
-    call seer.print.nl
-    pop rbx
-
     ; Write compiled binary
     mov rdi, [output_filename]
     mov rsi, [generated_code_ptr]
     mov rdx, [generated_code_size]
-
-    ; Debug: print code info
-    push rdi
-    push rsi
-    push rdx
-    mov rdi, msg_code_info
-    call seer.print.text
-    mov rdi, [rsp]     ; rdx = size
-    call seer.print.int
-    call seer.print.nl
-    pop rdx
-    pop rsi
-    pop rdi
 
     call seer.format.elf64_write
 
     cmp rax, 0
     jne .err_write
 
+    ; Success message
     mov rdi, msg_output_written
     call seer.print.text
     mov rdi, [output_filename]
