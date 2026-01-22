@@ -55,6 +55,65 @@ seer.print.text:
     pop rdi
     ret
 
+seer.print.char:
+    ; [AI_HINT: Cetak satu karakter]
+    ; Input: rdi (char code, e.g., 'A' or 65)
+
+    push rdi
+    push rsi
+    push rdx
+    push rax
+
+    push rdi        ; Push char to stack (8 bytes, but we read 1)
+    mov rsi, rsp    ; RSI points to stack
+    mov rdx, 1      ; Length 1
+    mov rdi, 1      ; STDOUT
+    mov rax, 1      ; SYS_WRITE
+    syscall
+
+    pop rax         ; Clean stack
+
+    pop rax
+    pop rdx
+    pop rsi
+    pop rdi
+    ret
+
+seer.print.bool:
+    ; [AI_HINT: Cetak boolean ("true" atau "false")]
+    ; Input: rdi (0 = false, otherwise = true)
+
+    push rdi
+    push rsi
+    push rdx
+    push rax
+
+    cmp rdi, 0
+    je .print_false
+
+    ; Print true
+    mov rsi, .str_true
+    mov rdx, 4
+    jmp .do_print
+
+    .print_false:
+    mov rsi, .str_false
+    mov rdx, 5
+
+    .do_print:
+    mov rdi, 1      ; STDOUT
+    mov rax, 1      ; SYS_WRITE
+    syscall
+
+    pop rax
+    pop rdx
+    pop rsi
+    pop rdi
+    ret
+
+    .str_true db "true"
+    .str_false db "false"
+
 seer.print.nl:
     ; [AI_HINT: Cetak baris baru (\n)]
     push rdi
@@ -78,8 +137,8 @@ seer.print.nl:
     pop rdi
     ret
 
-seer.print.int:
-    ; [AI_HINT: Cetak integer 64-bit (signed) ke stdout]
+seer.print.uint:
+    ; [AI_HINT: Cetak integer 64-bit (unsigned) ke stdout]
     ; Input: rdi (integer value)
 
     push rdi
@@ -95,35 +154,11 @@ seer.print.int:
     sub rsp, 24
     mov r8, rsp     ; r8 menunjuk ke buffer start
     add r8, 20      ; Mulai dari belakang buffer
-    mov byte [r8], 0 ; Null terminator (opsional, kita pakai length)
+    mov byte [r8], 0 ; Null terminator
 
     mov rax, rdi    ; Nilai yang akan dibagi
     mov rcx, 10     ; Pembagi
     xor rsi, rsi    ; Counter digit
-
-    ; Handle tanda negatif
-    cmp rax, 0
-    jge .process_digit
-    neg rax         ; Jadikan positif
-
-    ; Cetak '-' manual
-    push rax
-    push rdi
-    push rsi
-    push rdx
-
-    push 0x2D       ; '-'
-    mov rsi, rsp
-    mov rdx, 1
-    mov rdi, 1
-    mov rax, 1
-    syscall
-    pop rax         ; clean stack
-
-    pop rdx
-    pop rsi
-    pop rdi
-    pop rax
 
     .process_digit:
         xor rdx, rdx    ; Clear sisa bagi
@@ -153,6 +188,86 @@ seer.print.int:
     pop rsi
     pop rdi
     ret
+
+seer.print.int:
+    ; [AI_HINT: Cetak integer 64-bit (signed) ke stdout]
+    ; Input: rdi (integer value)
+
+    push rdi
+    push rsi
+    push rdx
+    push rcx
+    push rax
+    push r8
+    push rbp
+    mov rbp, rsp
+
+    ; Buffer lokal di stack
+    sub rsp, 24
+    mov r8, rsp
+    add r8, 20
+    mov byte [r8], 0
+
+    mov rax, rdi
+    mov rcx, 10
+    xor rsi, rsi
+
+    ; Handle tanda negatif
+    cmp rax, 0
+    jge .positive_val
+    neg rax         ; Jadikan positif
+
+    ; Cetak '-' manual
+    push rax
+    push rdi
+    push rsi
+    push rdx
+
+    push 0x2D       ; '-'
+    mov rsi, rsp
+    mov rdx, 1
+    mov rdi, 1
+    mov rax, 1
+    syscall
+    pop rax         ; clean stack
+
+    pop rdx
+    pop rsi
+    pop rdi
+    pop rax
+
+    .positive_val:
+        xor rdx, rdx
+        div rcx
+        add dl, '0'
+        dec r8
+        mov [r8], dl
+        inc rsi
+        test rax, rax
+        jnz .positive_val
+
+    ; Cetak buffer
+    mov rdx, rsi
+    mov rsi, r8
+    mov rdi, 1
+    mov rax, 1
+    syscall
+
+    mov rsp, rbp
+    pop rbp
+    pop r8
+    pop rax
+    pop rcx
+    pop rdx
+    pop rsi
+    pop rdi
+    ret
+
+seer.print.ptr:
+    ; [AI_HINT: Cetak pointer (0x...) - Alias untuk Hex]
+    ; Input: rdi (pointer address)
+    jmp seer.print.hex
+    ; Note: jmp is fine as hex preserves stack/regs
 
 seer.print.hex:
     ; [AI_HINT: Cetak integer 64-bit dalam format Hex (0x...)]
