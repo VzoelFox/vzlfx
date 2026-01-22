@@ -38,6 +38,19 @@ main:
     ; [rsi] = argv[0], [rsi+8] = argv[1]
     mov rbx, [rsi+8]    ; rbx = filename pointer
 
+    ; Cek apakah flag version?
+    mov rdi, arg_version_short ; "-v"
+    mov rsi, rbx
+    call seer.string.equals
+    cmp rax, 1
+    je .print_version
+
+    mov rdi, arg_version_long ; "--version"
+    mov rsi, rbx
+    call seer.string.equals
+    cmp rax, 1
+    je .print_version
+
     ; Print info loading
     mov rdi, msg_loading
     call seer.print.text
@@ -152,6 +165,14 @@ main:
         call seer.print.nl
         jmp .exit_err
 
+    .print_version:
+        mov rdi, msg_version
+        call seer.print.text
+        call seer.print.nl
+        mov rdi, 0
+        mov rax, 60
+        syscall
+
     .exit_err:
         mov rdi, 1
         mov rax, 60
@@ -177,3 +198,6 @@ include '../Brainlib/brainlib.inc'
     msg_err_format  db "Error: File too short", 0
     msg_err_magic   db "Error: Invalid Magic Number. Expected VZOELFOX", 0
     magic_sig       db "VZOELFOX", 0
+    msg_version     db "MorphLoader v0.1.0", 0
+    arg_version_short db "-v", 0
+    arg_version_long  db "--version", 0
