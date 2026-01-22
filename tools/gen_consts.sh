@@ -9,6 +9,9 @@ echo "; Date: $(date)"
 # Track defined labels to avoid duplicates
 DEFINED_LABELS=" "
 
+# Registry content buffer
+REGISTRY_ENTRIES=""
+
 # Function to process a single JSON file
 process_file() {
     local filepath="$1"
@@ -39,15 +42,13 @@ process_file() {
             kind=""
             value=""
             hint=""
+            opcode=""
         elif [[ "$line" == "}," ]] || [[ "$line" == "}" ]]; then
             if [[ "$in_block" -eq 1 ]]; then
-                # 1. Handle Terminal Constants (Legacy logic preserved for terminal.json)
+                # 1. Handle Terminal Constants
                 if [[ "$filename" == "terminal.json" && "$kind" == "const_str" ]]; then
-                    # Remove quotes
                     val_content="${value%\"}"
                     val_content="${val_content#\"}"
-
-                    # Check for \u001b
                     if [[ "$val_content" == *"\\u001b"* ]]; then
                         rest=${val_content/\\u001b/}
                         echo "str_${name} db 0x1b, '${rest}', 0"
@@ -58,8 +59,7 @@ process_file() {
                     fi
                 fi
 
-                # 2. Handle AI Hints (New logic for all files)
-                # Determine key (mnemonic takes precedence, then name)
+                # 2. Handle Instructions & Hints
                 local key=""
                 if [[ -n "$mnemonic" ]]; then
                     key="$mnemonic"
@@ -67,39 +67,53 @@ process_file() {
                     key="$name"
                 fi
 
-                if [[ -n "$key" && -n "$hint" ]]; then
-                    # Remove quotes from hint
-                    hint_content="${hint%\"}"
-                    hint_content="${hint_content#\"}"
-
-                    # Sanitize key for FASM label (replace . with _)
+                if [[ -n "$key" ]]; then
                     local label_key=$(echo "$key" | tr '.' '_')
                     local hint_label="hint_${label_key}"
+                    local str_label="str_${label_key}"
+                    local op_label="op_${label_key}"
+                    local len_label="len_${label_key}"
 
-                    # Output hint constant if not defined
-                    if [[ "$DEFINED_LABELS" != *" $hint_label "* ]]; then
-                        echo "${hint_label} db '${hint_content}', 0"
-                        DEFINED_LABELS+="$hint_label "
+                    # Hint String
+                    if [[ -n "$hint" ]]; then
+                        local hint_content="${hint%\"}"
+                        hint_content="${hint_content#\"}"
+
+                        if [[ "$DEFINED_LABELS" != *" $hint_label "* ]]; then
+                            echo "${hint_label} db '${hint_content}', 0"
+                            DEFINED_LABELS+="$hint_label "
+                        fi
                     fi
-                fi
 
-                # 3. Handle Opcode (For Runner)
-                if [[ -n "$mnemonic" && -n "$opcode" ]]; then
-                     # Sanitize key
-                     local label_key=$(echo "$mnemonic" | tr '.' '_')
+                    # Mnemonic String (for Tokenizer Lookup)
+                    if [[ -n "$mnemonic" ]]; then
+                         if [[ "$DEFINED_LABELS" != *" $str_label "* ]]; then
+                            echo "${str_label} db '${mnemonic}', 0"
+                            DEFINED_LABELS+="$str_label "
+                        fi
+                    fi
 
-                     # Check duplicate for Opcode
-                     local op_label="op_${label_key}"
-                     if [[ "$DEFINED_LABELS" != *" $op_label "* ]]; then
-                         # Opcode value (e.g., 0x01 or 0x0F,0xAF)
-                         echo "${op_label} db ${opcode}"
-                         DEFINED_LABELS+="$op_label "
-                     fi
+                    # Opcode Data
+                    if [[ -n "$mnemonic" && -n "$opcode" ]]; then
+                         # Calculate Opcode Length (count commas + 1)
+                         # e.g. "0x0F,0xAF" -> 2
+                         local op_len=$(echo "$opcode" | awk -F, '{print NF}')
+
+                         if [[ "$DEFINED_LABELS" != *" $op_label "* ]]; then
+                             echo "${op_label} db ${opcode}"
+                             echo "${len_label} dq ${op_len}"
+                             DEFINED_LABELS+="$op_label "
+
+                             # Add to Registry Entry Buffer
+                             # Format: [Ptr Mnemonic] [Ptr Opcode] [Len Opcode] [Ptr Hint]
+                             # Use ${op_len} directly (value) instead of label (address)
+                             REGISTRY_ENTRIES+="\n    dq ${str_label}\n    dq ${op_label}\n    dq ${op_len}\n    dq ${hint_label}"
+                         fi
+                    fi
                 fi
             fi
             in_block=0
         else
-            # Extract fields using Regex
             if [[ "$line" =~ \"mnemonic\":\ \"([^\"]+)\" ]]; then
                 mnemonic="${BASH_REMATCH[1]}"
             elif [[ "$line" =~ \"name\":\ \"([^\"]+)\" ]]; then
@@ -107,24 +121,26 @@ process_file() {
             elif [[ "$line" =~ \"kind\":\ \"([^\"]+)\" ]]; then
                 kind="${BASH_REMATCH[1]}"
             elif [[ "$line" =~ \"value\":\ \"(.*)\" ]]; then
-                # String value
                 value="\"${BASH_REMATCH[1]}\""
             elif [[ "$line" =~ \"hint\":\ \"(.*)\" ]]; then
                 hint="\"${BASH_REMATCH[1]}\""
             elif [[ "$line" =~ \"opcode\":\ \"([^\"]+)\" ]]; then
                 opcode="${BASH_REMATCH[1]}"
             fi
-
-            # Handle numeric value if needed (though mostly for consts which might not need FASM output other than equ?)
-            # Existing script didn't output numeric constants, only const_str for terminal.
-            # If we need to output numeric constants as 'equ', we can add that logic.
-            # For now, adhering to 'Code Honesty': replicate existing behavior + hints.
         fi
     done < "$filepath"
 }
 
-# Iterate over all JSON files in Brainlib
-# Sort them to ensure deterministic output order
+# Iterate over all JSON files
 for f in $(ls Brainlib/*.json | sort); do
     process_file "$f"
 done
+
+# Output Registry
+echo ""
+echo "; ----------------------------------------------------------------"
+echo "; Instruction Registry"
+echo "; ----------------------------------------------------------------"
+echo "instruction_registry:"
+echo -e "$REGISTRY_ENTRIES"
+echo "    dq 0 ; Terminator"
