@@ -115,76 +115,11 @@ main:
     add r13, 8
     sub r14, 8
 
-    ; --- 4. Simple Tokenizer (Scanner) ---
-    ; Scan buffer r13, panjang r14
-    ; Pisahkan berdasarkan spasi/newline
-
-    mov rsi, r13        ; Current ptr
-    mov rcx, r14        ; Remaining bytes
-    add rcx, rsi        ; End ptr
-
-    .scan_loop:
-        cmp rsi, rcx
-        jge .scan_done
-
-        mov al, [rsi]
-
-        ; Skip whitespace (Space 32, Tab 9, Newline 10)
-        cmp al, 32
-        je .skip_char
-        cmp al, 9
-        je .skip_char
-        cmp al, 10
-        je .skip_char
-
-        ; Found Start of Token
-        mov rbx, rsi    ; Start Token
-
-        .token_loop:
-            inc rsi
-            cmp rsi, rcx
-            jge .token_end
-
-            mov al, [rsi]
-            cmp al, 32
-            je .token_end
-            cmp al, 9
-            je .token_end
-            cmp al, 10
-            je .token_end
-            jmp .token_loop
-
-        .token_end:
-        ; Token dari rbx sampai rsi
-        ; Print "Token: [isi]"
-
-        push rsi
-        push rcx
-
-        mov rdi, msg_token_start
-        call seer.print.text
-
-        ; Print raw buffer part
-        mov rdi, rbx    ; Start
-        mov rax, rsi
-        sub rax, rbx    ; Length
-        mov rsi, rax    ; Pass Length in RSI
-        call seer.print.raw
-
-        mov rdi, msg_token_end
-        call seer.print.text
-        call seer.print.nl
-
-        pop rcx
-        pop rsi
-
-        jmp .scan_loop
-
-        .skip_char:
-        inc rsi
-        jmp .scan_loop
-
-    .scan_done:
+    ; --- 4. Transfer to Runner ---
+    ; Payload di r13, Size di r14
+    mov rdi, r13
+    mov rsi, r14
+    call runner_start
 
     mov rdi, msg_done
     call seer.print.text
@@ -227,6 +162,7 @@ main:
 include '../seer/print/std.asm'
 include '../utils/string/compare.asm'
 include '../utils/string/utf.asm'
+include 'runner.asm'
 
 segment readable writable
 include '../Brainlib/brainlib.inc'
