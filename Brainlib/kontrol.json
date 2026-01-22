@@ -384,14 +384,16 @@
     "kind": "struct",
     "type": "scope_start",
     "scope": "FUNGSI",
-    "action": "def_label"
+    "action": "def_label",
+    "hint": "Definisi awal scope fungsi"
   },
   {
     "mnemonic": "tutup_fungsi",
     "kind": "struct",
     "type": "scope_end",
     "scope": "FUNGSI",
-    "action": "ret"
+    "action": "ret",
+    "hint": "Akhir dari scope fungsi"
   },
   {
     "mnemonic": "jika_sama",
