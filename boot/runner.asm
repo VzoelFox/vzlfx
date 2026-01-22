@@ -115,10 +115,50 @@ runner_start:
 
     .compile_done:
 
-    ; 4. Finalize JIT
-    ; Add 'ret' (0xC3) to safely return to Runner
+    ; 4. Finalize code
+    ; Check if compile-only mode to determine ending
+    cmp byte [compile_only_mode], 1
+    je .finalize_standalone
+
+    ; JIT mode - Add 'ret' to return to caller
     mov byte [rbx], 0xC3
     inc rbx
+    jmp .finalized
+
+.finalize_standalone:
+    ; Standalone mode - Add proper exit syscall
+    ; mov rax, 60 (sys_exit)
+    mov byte [rbx], 0x48        ; REX.W
+    inc rbx
+    mov byte [rbx], 0xC7        ; MOV r/m64, imm32
+    inc rbx
+    mov byte [rbx], 0xC0        ; ModR/M (rax)
+    inc rbx
+    mov dword [rbx], 60         ; exit syscall number
+    add rbx, 4
+
+    ; xor rdi, rdi (exit code 0)
+    mov byte [rbx], 0x48        ; REX.W
+    inc rbx
+    mov byte [rbx], 0x31        ; XOR
+    inc rbx
+    mov byte [rbx], 0xFF        ; ModR/M (rdi, rdi)
+    inc rbx
+
+    ; syscall
+    mov byte [rbx], 0x0F
+    inc rbx
+    mov byte [rbx], 0x05
+    inc rbx
+
+.finalized:
+    ; Calculate generated code size
+    mov r14, rbx
+    sub r14, r15        ; r14 = code size
+
+    ; Check if compile-only mode (save code instead of executing)
+    cmp byte [compile_only_mode], 1
+    je .save_code
 
     ; 5. Execute JIT
     mov rdi, msg_executing
@@ -128,6 +168,18 @@ runner_start:
     call r15    ; Call Generated Code
 
     mov rdi, msg_finished
+    call seer.print.text
+    call seer.print.nl
+
+    leave
+    ret
+
+.save_code:
+    ; Save generated code to global buffer for external use
+    mov [generated_code_ptr], r15
+    mov [generated_code_size], r14
+
+    mov rdi, msg_compiled
     call seer.print.text
     call seer.print.nl
 
@@ -261,3 +313,7 @@ msg_hint_prefix  db "Linter: ", 0
 msg_error_unknown db "Error: Unknown instruction: ", 0
 msg_executing    db "Runner: Executing JIT Code...", 0
 msg_finished     db "Runner: Execution Finished.", 0
+msg_compiled     db "Runner: Code compiled successfully.", 0
+
+; Note: compile_only_mode, generated_code_ptr, generated_code_size
+; are defined in loader.asm writable segment

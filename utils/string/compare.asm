@@ -66,6 +66,11 @@ seer.string.equals_len:
         dec rcx
         jnz .loop_cmp_len
 
+    ; After comparing rdx bytes, check if str1 continues (should be null-terminated)
+    mov al, [rdi]
+    cmp al, 0
+    jne .diff_len   ; str1 is longer than rdx bytes
+
     .same_len:
         mov rax, 1
         jmp .done_len
